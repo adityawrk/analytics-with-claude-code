@@ -1,6 +1,10 @@
 ---
 name: sql-optimizer
-description: Analyze and optimize slow SQL queries. Use when a query is performing poorly, needs refactoring for clarity, or you want to identify anti-patterns and missing indexes.
+description: >
+  Analyze and optimize slow SQL queries. Use when the user says a query is slow, asks to
+  optimize or speed up SQL, wants to find anti-patterns, needs index recommendations, or
+  asks for a query rewrite. Also use when EXPLAIN output shows full table scans or poor
+  join strategies.
 ---
 
 # SQL Query Optimizer

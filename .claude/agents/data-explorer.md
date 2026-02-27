@@ -2,9 +2,9 @@
 name: data-explorer
 description: >
   Discovers and documents data sources, schemas, table relationships, and data lineage.
-  Use this agent when onboarding to a new dataset, starting a new analysis, mapping
-  unfamiliar data sources, or when you need a structured understanding of what data
-  is available and how it connects.
+  Use proactively when onboarding to a new dataset, when the Learnings section is empty,
+  when the user mentions unfamiliar tables, or when any agent needs schema context that
+  doesn't exist yet. This is the first agent to run on a new project.
 tools: Read, Grep, Glob, Bash
 ---
 

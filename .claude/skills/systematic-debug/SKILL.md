@@ -1,3 +1,12 @@
+---
+name: systematic-debug
+description: >
+  4-phase structured debugging with a 3-strike escalation rule. Use when a query fails,
+  a pipeline breaks, results look wrong, a dbt model errors, or any analytical code
+  produces unexpected output. Prevents cargo-cult debugging by enforcing reproduce →
+  analyze → fix → verify in strict order.
+---
+
 # Systematic Debugging for Analytics
 
 A 4-phase structured debugging methodology. Follow these phases in strict order.

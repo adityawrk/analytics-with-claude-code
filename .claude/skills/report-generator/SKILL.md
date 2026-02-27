@@ -1,6 +1,10 @@
 ---
 name: report-generator
-description: Generate structured analytics reports with metrics, trends, and visualizations. Use for weekly/monthly business reviews, ad-hoc deep dives, incident postmortems, or executive summaries.
+description: >
+  Generate structured analytics reports with metrics, trends, and visualizations. Use
+  when the user asks for a business review, monthly report, executive summary, deep dive,
+  incident postmortem, or any deliverable that combines data, charts, and narrative for
+  stakeholders.
 ---
 
 # Analytics Report Generator

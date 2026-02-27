@@ -1,10 +1,11 @@
 ---
 name: analytics-reviewer
 description: >
-  Reviews analytical work for correctness, rigor, and reliability. Checks SQL logic,
-  metric definitions, statistical methodology, and data quality. Use this agent before
-  sharing analysis with stakeholders, during PR reviews of analytical code, or when
-  validating that metric definitions match business requirements.
+  Reviews analytical work for correctness, rigor, and reliability. Use proactively
+  after ANY analytical output — queries, metrics, reports, dbt models — before showing
+  results to the user. Checks for hallucinated references, join fan-out, wrong
+  aggregation grain, NULL handling, metric definition mismatches, and sanity of numbers.
+  This agent is the quality gate.
 tools: Read, Grep, Glob, Bash
 ---
 

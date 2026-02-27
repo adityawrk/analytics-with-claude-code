@@ -2,7 +2,7 @@
 
 A production-ready [Claude Code](https://docs.anthropic.com/en/docs/claude-code) configuration for analytics teams. Drop it into any project, paste your top 5 queries, and Claude becomes an analytics expert that knows your data, delegates to specialized agents, auto-reviews every output, and never hallucinates.
 
-![License](https://img.shields.io/badge/license-MIT-blue) ![Skills](https://img.shields.io/badge/skills-10-green) ![Agents](https://img.shields.io/badge/agents-5-purple)
+![License](https://img.shields.io/badge/license-MIT-blue) ![Skills](https://img.shields.io/badge/skills-10-green) ![Agents](https://img.shields.io/badge/agents-6-purple)
 
 ## How It Works
 
@@ -56,9 +56,10 @@ Why this matters for analytics:
 
 | Agent | What It Does |
 |-------|-------------|
+| `analyst` | Answers business questions — writes SQL, runs queries, validates results, interprets findings |
 | `data-explorer` | Maps schemas, discovers tables, profiles data, traces lineage |
 | `sql-developer` | Writes, tests, and iterates on SQL queries and dbt models |
-| `analytics-reviewer` | Reviews queries for correctness -- validates joins, metrics, NULL handling, sanity-checks numbers |
+| `analytics-reviewer` | Reviews every output for correctness — validates joins, metrics, NULL handling, sanity-checks numbers |
 | `pipeline-builder` | Builds dbt models with tests, docs, and schema.yml following staging/intermediate/mart conventions |
 | `analytics-onboarder` | Generates a complete Data Team Handbook from your codebase via static analysis |
 

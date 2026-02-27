@@ -1,6 +1,10 @@
 ---
 name: data-quality
-description: Run a comprehensive data quality assessment and produce a scorecard. Use when onboarding a new data source, debugging data issues, setting up monitoring, or auditing data pipelines.
+description: >
+  Run a comprehensive data quality assessment and produce a scorecard across 6 dimensions:
+  completeness, uniqueness, consistency, timeliness, accuracy, validity. Use when the user
+  asks about data quality, mentions data issues, wants to audit a table, is onboarding a
+  new data source, or needs to validate pipeline output.
 ---
 
 # Data Quality Checker

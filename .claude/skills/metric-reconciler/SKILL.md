@@ -1,7 +1,10 @@
 ---
 name: metric-reconciler
-description: Compare two SQL queries, dbt models, or metric definitions that should calculate the same number and find exactly where and why they disagree. Use when dashboards show different numbers, when migrating metric logic, or when validating a new query against a trusted source.
-user_invocable: true
+description: >
+  Compare two metric definitions that should produce the same number and find exactly where
+  they disagree. Use when the user says "these numbers don't match", "why do two dashboards
+  show different results", or when migrating metric logic and validating the new query
+  against the old one.
 ---
 
 # Metric Disagreement Detector

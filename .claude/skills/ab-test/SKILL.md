@@ -1,6 +1,10 @@
 ---
 name: ab-test
-description: Perform rigorous A/B test analysis with statistical significance testing, sample size validation, and decision recommendations. Use when evaluating experiment results, planning sample sizes, or auditing test methodology.
+description: >
+  Perform rigorous A/B test analysis with statistical significance testing, sample size
+  validation, and ship/no-ship recommendations. Use when the user mentions A/B tests,
+  experiments, variant analysis, significance testing, sample size planning, or asks
+  "should we ship this?" based on experiment data.
 ---
 
 # A/B Test Analyzer

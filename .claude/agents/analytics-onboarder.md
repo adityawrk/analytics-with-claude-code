@@ -1,6 +1,11 @@
 ---
 name: analytics-onboarder
-description: "Maps data sources, discovers relationships, documents tribal knowledge, and generates a Data Team Handbook. Use when onboarding to a new project or creating documentation for an existing one."
+description: >
+  Maps data sources, discovers relationships, documents tribal knowledge, and generates
+  a complete Data Team Handbook. Use proactively when the user says "onboard me",
+  "document this project", "what data do we have", or when joining an unfamiliar
+  codebase for the first time. Produces a comprehensive handbook a new analyst can
+  use on day one.
 tools: Read, Grep, Glob, Bash
 ---
 

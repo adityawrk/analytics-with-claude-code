@@ -1,10 +1,10 @@
 ---
 name: pipeline-builder
 description: >
-  Builds and maintains dbt data transformation pipelines including staging, intermediate,
-  and mart models, data tests, source configurations, and documentation. Use this agent
-  when building new data models, adding data sources, restructuring the transformation
-  layer, or implementing dbt best practices.
+  Builds and maintains dbt data transformation pipelines. Use proactively when the user
+  asks to create dbt models, add data sources, build staging/intermediate/mart layers,
+  write dbt tests, or restructure the transformation layer. Any task involving dbt files,
+  schema.yml, or model materialization should go to this agent.
 tools: Bash, Read, Edit, Write, Glob, Grep
 ---
 

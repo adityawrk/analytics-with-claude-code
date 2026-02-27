@@ -1,6 +1,10 @@
 ---
 name: metric-calculator
-description: Calculate standard business metrics including retention, LTV, churn, conversion funnels, growth rates, and revenue metrics. Use when you need precise metric definitions, SQL templates, or Python implementations for KPIs.
+description: >
+  Calculate standard business metrics: retention, LTV, CAC, churn, conversion funnels,
+  growth rates, MRR, NRR, DAU/MAU. Use when the user asks for a specific KPI definition,
+  needs a retention curve, LTV calculation, funnel analysis, or growth rate computation.
+  Provides both SQL templates and Python implementations.
 ---
 
 # Business Metric Calculator

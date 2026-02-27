@@ -1,7 +1,10 @@
 ---
 name: explain-sql
-description: Explain complex SQL queries in plain English with data flow diagrams, performance annotations, and anti-pattern detection. Use when you need to understand, document, or review a SQL query — especially CTEs, window functions, recursive queries, and dbt models.
-user_invocable: true
+description: >
+  Explain complex SQL queries in plain English with Mermaid data flow diagrams, performance
+  annotations, and anti-pattern detection. Use when the user pastes a SQL query and asks
+  "what does this do?", "explain this query", or needs to understand inherited SQL, CTEs,
+  window functions, recursive queries, or dbt model logic.
 ---
 
 # SQL Explained

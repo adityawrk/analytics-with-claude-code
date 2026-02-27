@@ -30,13 +30,20 @@ You have specialized agents. USE THEM. Delegate execution-heavy work so the main
 
 | Task | Delegate to | Why |
 |------|------------|-----|
+| Answer a business question with data | `analyst` agent | Writes SQL, runs it, validates results, interprets findings |
 | Discover tables, columns, schemas | `data-explorer` agent | Read-only, won't pollute main context |
-| Write or modify SQL queries | `sql-developer` agent | Has full SQL conventions, tests queries, handles dialect differences |
-| Build dbt models, tests, docs | `pipeline-builder` agent | Knows dbt naming (stg/int/fct/dim), generates schema.yml |
+| Write or modify SQL / dbt models | `sql-developer` agent | Full SQL conventions, iterative development, dialect handling |
+| Build dbt pipelines and tests | `pipeline-builder` agent | Knows dbt naming (stg/int/fct/dim), generates schema.yml |
 | Map a new data source end-to-end | `analytics-onboarder` agent | Generates a complete data handbook from static analysis |
+| Validate any analytical output | `analytics-reviewer` agent | Quality gate — checks for errors before results reach the user |
 | Debug a failing query or pipeline | Use `/systematic-debug` skill | 4-phase structured debugging, prevents cargo-cult fixes |
 
-**When NOT to delegate**: Simple questions, clarifications, presenting final results, metric discussions. Those stay in main chat.
+**When to delegate vs stay in main chat:**
+- User asks "what's our retention?" → delegate to `analyst`
+- User asks "build me a dbt model for orders" → delegate to `pipeline-builder`
+- User says "explain this query" → use `/explain-sql` skill (stays in main chat, user needs to see it)
+- User asks "how do you define churn?" → stay in main chat (this is a discussion, not execution)
+- User corrects a metric → stay in main chat, update Learnings
 
 **Context management**: Each agent has its own context window. When delegating:
 - Include relevant Learnings context in the task description (table names, schemas, relationships the agent will need)

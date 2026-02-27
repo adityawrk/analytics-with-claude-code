@@ -1,10 +1,10 @@
 ---
 name: sql-developer
 description: >
-  Writes, tests, and iterates on complex SQL queries and dbt models. Handles error
-  debugging, performance optimization, and query documentation. Use this agent when
-  building analytical queries, creating dbt models, writing reporting SQL, or when
-  you need to iterate on query logic against a live database.
+  Writes, tests, and iterates on complex SQL queries and dbt models. Use proactively
+  when building or modifying SQL queries, creating dbt models, optimizing query
+  performance, or when iterative SQL development is needed. For answering business
+  questions, prefer the analyst agent instead.
 tools: Bash, Read, Edit, Write
 ---
 

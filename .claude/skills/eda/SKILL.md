@@ -1,6 +1,10 @@
 ---
 name: eda
-description: Perform comprehensive Exploratory Data Analysis on any dataset (CSV, Parquet, database table). Use when you need to understand a new dataset's structure, quality, distributions, and relationships before deeper analysis.
+description: >
+  Perform comprehensive Exploratory Data Analysis on any dataset. Use when the user
+  mentions a new dataset, says "explore this data", "profile this table", "what does
+  this data look like", uploads a CSV/Parquet file, or needs to understand distributions,
+  nulls, correlations, and outliers before deeper analysis.
 ---
 
 # Exploratory Data Analysis (EDA)
