@@ -106,7 +106,7 @@ Claude Code uses a hierarchy of configuration files. Understanding this helps yo
 3. **Project `.claude/` directory** -- Contains agents, skills, rules, and hooks specific to this project. Our repo provides all of these pre-configured.
 4. **Rules `.claude/rules/*.md`** -- Auto-applied by file pattern via `globs` frontmatter (e.g., SQL conventions apply to all `**/*.sql` files).
 
-The `CLAUDE.md` in this repository is a **project-level** configuration. Copy it to the root of your analytics project alongside the `.claude/` directory. Claude reads it automatically when you open Claude Code in that directory.
+The `CLAUDE.md` in this repository is a **project-level** configuration. Copy it to the root of your analytics project alongside the `.claude/` directory. Claude reads it automatically when you open Claude Code in that directory. For the full hierarchy including managed policies and local overrides, see the [official docs](https://code.claude.com/docs/en/memory).
 
 ### Recommended project structure
 

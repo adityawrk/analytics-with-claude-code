@@ -87,7 +87,7 @@ claude
 - Include clear comments explaining the logic
 - Read input from stdin as JSON, use jq for parsing
 - PreToolUse hooks: deny via `hookSpecificOutput` with `permissionDecision: "deny"`, allow via `exit 0` with no output
-- PostToolUse hooks: `exit 0` for side effects, `decision: "block"` only if needed
+- PostToolUse hooks: `exit 0` with no output for side effects only
 - Reference scripts via `"$CLAUDE_PROJECT_DIR"/.claude/hooks/your-hook.sh` in settings.json
 
 ### Guides

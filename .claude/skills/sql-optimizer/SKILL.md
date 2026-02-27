@@ -109,7 +109,7 @@ Produce the optimized query following these principles:
 2. **Filter early**: push WHERE conditions as deep as possible, ideally into the CTEs or subqueries where the relevant table is referenced.
 3. **Explicit column lists**: no `SELECT *`.
 4. **Consistent formatting**:
-   - Keywords in UPPERCASE.
+   - Keywords in lowercase (match project sql-conventions rule).
    - One clause per line (SELECT, FROM, WHERE, GROUP BY, etc.).
    - Each join on its own line.
    - Indentation of 4 spaces for continuation lines.
