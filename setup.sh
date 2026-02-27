@@ -201,13 +201,10 @@ fi
 # ---------------------------------------------------------------------------
 echo -e "\n${arrow} ${BOLD}Setting up MCP configuration for ${STACK}...${NC}"
 
-MCP_SRC="${REPO_DIR}/templates/mcp"
-if [[ -f "${MCP_SRC}/${STACK}.json" ]]; then
-    cp "${MCP_SRC}/${STACK}.json" "${CLAUDE_DIR}/mcp.json"
-    echo -e "   ${check} Copied ${STACK}.json to .claude/mcp.json"
-elif [[ -f "${MCP_SRC}/mcp-config.json" ]]; then
-    cp "${MCP_SRC}/mcp-config.json" "${CLAUDE_DIR}/mcp.json"
-    echo -e "   ${check} Copied default MCP config (edit for your ${STACK} credentials)"
+MCP_FILE="${REPO_DIR}/templates/mcp-${STACK}.json"
+if [[ -f "$MCP_FILE" ]]; then
+    cp "$MCP_FILE" "${CLAUDE_DIR}/mcp.json"
+    echo -e "   ${check} Copied mcp-${STACK}.json to .claude/mcp.json"
 else
     echo -e "   ${warn} No MCP template found for ${STACK}"
     echo -e "   ${warn} You can configure MCP manually later — see guides/mcp-setup.md"

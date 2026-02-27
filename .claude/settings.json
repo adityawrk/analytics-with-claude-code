@@ -1,4 +1,32 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(dbt run *)",
+      "Bash(dbt test *)",
+      "Bash(dbt build *)",
+      "Bash(sqlfluff *)",
+      "Bash(python scripts/*)",
+      "Bash(pytest *)",
+      "Read(models/**)",
+      "Read(analysis/**)",
+      "Read(docs/**)",
+      "Edit(models/**/*.sql)",
+      "Edit(models/**/*.yml)",
+      "Edit(analysis/**/*.sql)",
+      "Edit(analysis/**/*.py)"
+    ],
+    "deny": [
+      "Bash(* DROP *)",
+      "Bash(* TRUNCATE *)",
+      "Bash(* DELETE FROM *)",
+      "Bash(rm -rf *)",
+      "Read(.env*)",
+      "Read(**/credentials*)",
+      "Read(**/secrets*)",
+      "Edit(.env*)",
+      "Edit(**/credentials*)"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {

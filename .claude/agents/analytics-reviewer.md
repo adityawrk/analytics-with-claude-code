@@ -6,7 +6,7 @@ description: >
   results to the user. Checks for hallucinated references, join fan-out, wrong
   aggregation grain, NULL handling, metric definition mismatches, and sanity of numbers.
   This agent is the quality gate.
-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob
 ---
 
 # Analytics Reviewer Agent

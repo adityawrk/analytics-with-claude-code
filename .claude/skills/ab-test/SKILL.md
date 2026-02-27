@@ -5,6 +5,7 @@ description: >
   validation, and ship/no-ship recommendations. Use when the user mentions A/B tests,
   experiments, variant analysis, significance testing, sample size planning, or asks
   "should we ship this?" based on experiment data.
+allowed-tools: Bash, Read, Glob, Grep
 ---
 
 # A/B Test Analyzer

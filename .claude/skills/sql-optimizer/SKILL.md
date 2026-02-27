@@ -5,6 +5,7 @@ description: >
   optimize or speed up SQL, wants to find anti-patterns, needs index recommendations, or
   asks for a query rewrite. Also use when EXPLAIN output shows full table scans or poor
   join strategies.
+allowed-tools: Bash, Read, Glob, Grep
 ---
 
 # SQL Query Optimizer

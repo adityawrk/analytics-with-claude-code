@@ -5,6 +5,7 @@ description: >
   when the user asks for a business review, monthly report, executive summary, deep dive,
   incident postmortem, or any deliverable that combines data, charts, and narrative for
   stakeholders.
+allowed-tools: Bash, Read, Glob, Grep, Write
 ---
 
 # Analytics Report Generator

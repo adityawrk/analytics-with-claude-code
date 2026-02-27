@@ -1,5 +1,8 @@
 ---
 description: Standard business metric definitions ensuring consistency across all analytics work
+globs:
+  - "**/*.sql"
+  - "**/*.py"
 ---
 
 # Standard Metric Definitions

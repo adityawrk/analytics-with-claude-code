@@ -5,6 +5,7 @@ description: >
   anomaly detection, and executive summaries. Use when the user asks for a weekly report,
   monthly KPI review, recurring metrics snapshot, or needs automated period-over-period
   diffing. Saves templates for one-command re-runs.
+allowed-tools: Bash, Read, Glob, Grep, Write
 ---
 
 # Recurring Report Generator

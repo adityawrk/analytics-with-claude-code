@@ -103,9 +103,10 @@ Claude Code uses a hierarchy of configuration files. Understanding this helps yo
 
 ### CLAUDE.md hierarchy (highest to lowest priority)
 
-1. **Global `~/.claude/CLAUDE.md`** -- Your personal preferences that apply to ALL projects (e.g., "always use trailing commas", "I prefer BigQuery syntax"). Create this for things that are about you, not a specific project.
-2. **Project `./CLAUDE.md`** -- Project-level configuration. **This is what our repo provides.** It lives at the root of your analytics project and contains the data model, agent orchestration rules, anti-hallucination protocol, and the Learnings section that grows over time.
+1. **Project `./CLAUDE.md`** -- Project-level configuration. **This is what our repo provides.** It lives at the root of your analytics project and contains the data model, agent orchestration rules, anti-hallucination protocol, and the Learnings section that grows over time. Project-level overrides global.
+2. **Global `~/.claude/CLAUDE.md`** -- Your personal preferences that apply to ALL projects (e.g., "always use trailing commas", "I prefer BigQuery syntax"). Create this for things that are about you, not a specific project.
 3. **Project `.claude/` directory** -- Contains agents, skills, rules, and hooks specific to this project. Our repo provides all of these pre-configured.
+4. **Rules `.claude/rules/*.md`** -- Auto-applied by file pattern via `globs` frontmatter (e.g., SQL conventions apply to all `**/*.sql` files).
 
 The `CLAUDE.md` in this repository is a **project-level** configuration. Copy it to the root of your analytics project alongside the `.claude/` directory. Claude reads it automatically when you open Claude Code in that directory.
 

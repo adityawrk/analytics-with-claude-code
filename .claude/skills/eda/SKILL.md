@@ -5,6 +5,7 @@ description: >
   mentions a new dataset, says "explore this data", "profile this table", "what does
   this data look like", uploads a CSV/Parquet file, or needs to understand distributions,
   nulls, correlations, and outliers before deeper analysis.
+allowed-tools: Bash, Read, Glob, Grep
 ---
 
 # Exploratory Data Analysis (EDA)

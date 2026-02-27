@@ -5,6 +5,7 @@ description: >
   a pipeline breaks, results look wrong, a dbt model errors, or any analytical code
   produces unexpected output. Prevents cargo-cult debugging by enforcing reproduce →
   analyze → fix → verify in strict order.
+allowed-tools: Bash, Read, Glob, Grep, Edit
 ---
 
 # Systematic Debugging for Analytics

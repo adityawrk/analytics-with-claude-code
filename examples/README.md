@@ -1,8 +1,8 @@
 # Examples
 
-Complete, self-contained analytics workflows demonstrating Claude Code in action.
+Complete, self-contained analytics workflows demonstrating Claude Code in action. For a working example right now, see the [demo/](../demo/) directory which runs with DuckDB and sample data out of the box.
 
-Each example includes a README explaining the scenario, sample data, and step-by-step instructions you can follow along with.
+Each example below describes a scenario and walkthrough. **Contributions welcome** -- these need sample data files to be fully runnable. See [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ## Available Examples
 

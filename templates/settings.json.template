@@ -37,6 +37,15 @@
             "command": "bash .claude/hooks/validate-sql.sh"
           }
         ]
+      },
+      {
+        "matcher": "execute_sql",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/validate-sql.sh"
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -51,6 +60,15 @@
       },
       {
         "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/auto-format-sql.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
         "hooks": [
           {
             "type": "command",

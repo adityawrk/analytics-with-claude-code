@@ -5,6 +5,7 @@ description: >
   they disagree. Use when the user says "these numbers don't match", "why do two dashboards
   show different results", or when migrating metric logic and validating the new query
   against the old one.
+allowed-tools: Bash, Read, Glob, Grep
 ---
 
 # Metric Disagreement Detector

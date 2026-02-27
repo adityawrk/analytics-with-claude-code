@@ -83,23 +83,11 @@ These are NON-NEGOTIABLE. Break any of these and the user loses trust permanentl
 
 ## SQL Standards
 
-- CTEs over subqueries. Always.
-- Trailing commas in SELECT lists
-- snake_case for all identifiers
-- Inclusive start, exclusive end for date ranges: `WHERE dt >= '2024-01-01' AND dt < '2024-02-01'`
-- Filter on partitioned columns first
-- Date filter required on any table with >1M rows
-- Validate row counts after JOINs: `SELECT COUNT(*) before/after` to catch fan-out
-- Window functions over self-joins for running calculations
-- COALESCE and NULLIF for defensive aggregation
+See `.claude/rules/sql-conventions.md` (auto-applied to all `**/*.sql` files). Key rules: CTEs over subqueries, trailing commas, snake_case, inclusive-start/exclusive-end dates, date filters on large tables, row count validation after JOINs.
 
 ## Data Privacy
 
-- NEVER output raw PII (emails, names, phone numbers, addresses)
-- NEVER write to production tables. Dev/staging only.
-- Minimum group size of 5 for user-level aggregations
-- Hash or mask identifiers in sample data
-- NEVER commit credentials, tokens, or connection strings
+See `.claude/rules/data-privacy.md` (auto-applied). Key rules: no raw PII in outputs, no production writes, minimum group size of 5, hash identifiers, no credentials in code.
 
 ## Continuous Learning
 

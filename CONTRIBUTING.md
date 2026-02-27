@@ -25,7 +25,7 @@ Agents handle multi-step workflows. Good agents have clear scope, appropriate mo
 
 **To add an agent:**
 1. Create `.claude/agents/your-agent-name.md`
-2. Use frontmatter with `name`, `description`, `model`, and `tools`
+2. Use frontmatter with `name`, `description`, and `tools` (do NOT add a `model` field — agents inherit the model from the user's chat session)
 3. Write detailed system prompt instructions
 4. Document when to use it (and when NOT to)
 5. Update the agents table in `README.md`
@@ -71,9 +71,9 @@ claude
 - No hardcoded paths, database names, or credentials
 
 ### Agents
-- Frontmatter must include `name`, `description`, `model`, and `tools`
-- Model selection should match the task (haiku for exploration, sonnet for implementation)
-- Tool access should follow least-privilege
+- Frontmatter must include `name`, `description`, and `tools`
+- Do NOT set `model` — agents inherit the model from the user's chat session
+- Tool access should follow least-privilege (e.g., the reviewer agent has no Bash access)
 - Include clear behavioral instructions
 
 ### Rules

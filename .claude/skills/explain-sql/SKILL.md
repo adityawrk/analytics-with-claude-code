@@ -5,6 +5,7 @@ description: >
   annotations, and anti-pattern detection. Use when the user pastes a SQL query and asks
   "what does this do?", "explain this query", or needs to understand inherited SQL, CTEs,
   window functions, recursive queries, or dbt model logic.
+allowed-tools: Read, Glob, Grep
 ---
 
 # SQL Explained

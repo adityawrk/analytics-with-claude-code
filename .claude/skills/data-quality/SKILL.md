@@ -5,6 +5,7 @@ description: >
   completeness, uniqueness, consistency, timeliness, accuracy, validity. Use when the user
   asks about data quality, mentions data issues, wants to audit a table, is onboarding a
   new data source, or needs to validate pipeline output.
+allowed-tools: Bash, Read, Glob, Grep
 ---
 
 # Data Quality Checker

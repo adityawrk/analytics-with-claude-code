@@ -1,5 +1,10 @@
 ---
 description: Data privacy rules for handling sensitive and personally identifiable information
+globs:
+  - "**/*.sql"
+  - "**/*.py"
+  - "**/*.yml"
+  - "**/*.yaml"
 ---
 
 # Data Privacy Rules

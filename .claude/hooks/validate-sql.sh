@@ -69,7 +69,7 @@ fi
 if [ -z "$SQL" ] && [ "$TOOL_NAME" = "Bash" ]; then
     COMMAND="$(echo "$TOOL_INPUT" | jq -r '.command // empty')"
     # Only analyze if it looks like it might contain SQL
-    if echo "$COMMAND" | grep -qiE '(psql|mysql|bq |bigquery|snowsql|dbt run|sqlite3|clickhouse)'; then
+    if echo "$COMMAND" | grep -qiE '(psql|mysql|bq |bigquery|snowsql|dbt run|sqlite3|clickhouse|duckdb)'; then
         SQL="$COMMAND"
     else
         # Not a SQL command; approve.

@@ -5,6 +5,7 @@ description: >
   growth rates, MRR, NRR, DAU/MAU. Use when the user asks for a specific KPI definition,
   needs a retention curve, LTV calculation, funnel analysis, or growth rate computation.
   Provides both SQL templates and Python implementations.
+allowed-tools: Bash, Read, Glob, Grep
 ---
 
 # Business Metric Calculator
