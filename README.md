@@ -141,7 +141,7 @@ your-analytics-project/
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). We especially welcome new skills, community configurations in `community/`, and bug reports.
+See [CONTRIBUTING.md](CONTRIBUTING.md). We especially welcome new skills and bug reports.
 
 ## License
 

@@ -22,6 +22,7 @@ build/
 .env.*.local
 
 # Data (large files should use Git LFS or download scripts)
+*.duckdb
 *.parquet
 *.feather
 data/raw/
