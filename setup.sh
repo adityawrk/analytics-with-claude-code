@@ -8,6 +8,7 @@
 
 set -euo pipefail
 
+
 # ---------------------------------------------------------------------------
 # Colors and symbols
 # ---------------------------------------------------------------------------
@@ -160,37 +161,39 @@ echo -e "   ${check} Created .claude/{skills,rules,hooks,agents}"
 # ---------------------------------------------------------------------------
 echo -e "\n${arrow} ${BOLD}Installing skills for ${ROLE}...${NC}"
 
-SKILLS_SRC="${REPO_DIR}/templates/skills"
+SKILLS_SRC="${REPO_DIR}/.claude/skills"
 if [[ -d "$SKILLS_SRC" ]]; then
     # Everyone gets core skills
-    for skill in eda data-quality explain-sql metric-calculator; do
-        if [[ -f "${SKILLS_SRC}/${skill}.md" ]]; then
-            cp "${SKILLS_SRC}/${skill}.md" "${CLAUDE_DIR}/skills/"
+    for skill in eda data-quality explain-sql systematic-debug; do
+        if [[ -d "${SKILLS_SRC}/${skill}" ]]; then
+            mkdir -p "${CLAUDE_DIR}/skills/${skill}"
+            cp "${SKILLS_SRC}/${skill}/SKILL.md" "${CLAUDE_DIR}/skills/${skill}/"
             echo -e "   ${check} ${skill}"
         fi
     done
 
     # Role-specific skills
     if [[ "$ROLE" == "engineer" ]]; then
-        for skill in pipeline-builder sql-optimizer metric-reconciler; do
-            if [[ -f "${SKILLS_SRC}/${skill}.md" ]]; then
-                cp "${SKILLS_SRC}/${skill}.md" "${CLAUDE_DIR}/skills/"
+        for skill in sql-optimizer metric-reconciler weekly-report; do
+            if [[ -d "${SKILLS_SRC}/${skill}" ]]; then
+                mkdir -p "${CLAUDE_DIR}/skills/${skill}"
+                cp "${SKILLS_SRC}/${skill}/SKILL.md" "${CLAUDE_DIR}/skills/${skill}/"
                 echo -e "   ${check} ${skill}"
             fi
         done
     fi
 
     if [[ "$ROLE" == "scientist" ]]; then
-        for skill in ab-test metric-calculator; do
-            if [[ -f "${SKILLS_SRC}/${skill}.md" ]]; then
-                cp "${SKILLS_SRC}/${skill}.md" "${CLAUDE_DIR}/skills/"
+        for skill in ab-test metric-calculator report-generator; do
+            if [[ -d "${SKILLS_SRC}/${skill}" ]]; then
+                mkdir -p "${CLAUDE_DIR}/skills/${skill}"
+                cp "${SKILLS_SRC}/${skill}/SKILL.md" "${CLAUDE_DIR}/skills/${skill}/"
                 echo -e "   ${check} ${skill}"
             fi
         done
     fi
 else
-    echo -e "   ${warn} Skills source directory not found at ${SKILLS_SRC}"
-    echo -e "   ${warn} You can copy skills manually from the repository later."
+    echo -e "   ${warn} Skills source not found at ${SKILLS_SRC}"
 fi
 
 # ---------------------------------------------------------------------------
@@ -211,76 +214,34 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 9: Generate CLAUDE.md
+# Step 9: Copy CLAUDE.md (the product)
 # ---------------------------------------------------------------------------
-echo -e "\n${arrow} ${BOLD}Generating CLAUDE.md...${NC}"
+echo -e "\n${arrow} ${BOLD}Copying CLAUDE.md...${NC}"
 
 CLAUDE_MD="${TARGET_DIR}/CLAUDE.md"
-cat > "$CLAUDE_MD" << HEREDOC
-# Project Analytics Configuration
+cp "${REPO_DIR}/CLAUDE.md" "$CLAUDE_MD"
 
-## Data Stack
-Primary database: ${STACK}
-
-## Tools
-- Use the MCP database server configured in .claude/mcp.json for queries
-- For DuckDB/CSV: use Python or the DuckDB CLI directly
-- Always use parameterized queries when handling user-supplied values
-
-## Conventions
-- Write SQL in lowercase keywords (select, from, where, join)
-- Use CTEs instead of subqueries for readability
-- Always include a LIMIT when exploring data (default: 100)
-- Add comments to complex queries explaining business logic
-
-## Data Privacy
-- Never expose raw PII (emails, phone numbers, addresses) in output
-- Aggregate or mask sensitive fields when displaying results
-- Do not persist credentials or connection strings in plain text
-
-## Available Skills
-Run /help to see all available slash commands. Key ones:
-- /eda — Exploratory data analysis on any table or dataset
-- /data-quality — Scan for data quality issues
-- /explain-sql — Walk through a SQL query step by step
-HEREDOC
-
-# Add role-specific sections
-if [[ "$ROLE" == "engineer" ]]; then
-    cat >> "$CLAUDE_MD" << 'HEREDOC'
-- /sql-optimizer — Optimize slow SQL queries
-- /pipeline-builder — Design data transformation pipelines
-- /metric-reconciler — Reconcile conflicting metric definitions
-
-## Pipeline Conventions
-- Name staging models as stg_{source}_{table}
-- Name intermediate models as int_{description}
-- Name mart models as {domain}_{entity}
-- Always include a unique key and updated_at timestamp
-HEREDOC
-fi
-
-if [[ "$ROLE" == "scientist" ]]; then
-    cat >> "$CLAUDE_MD" << 'HEREDOC'
-- /ab-test — Design and analyze A/B tests
-- /metric-calculator — Define and compute business metrics
-
-## Experiment Conventions
-- Always check for sample ratio mismatch before analyzing results
-- Report confidence intervals alongside p-values
-- Consider practical significance, not just statistical significance
-- Document assumptions about independence and normality
-HEREDOC
-fi
-
-echo -e "   ${check} Generated CLAUDE.md at ${CLAUDE_MD}"
+echo -e "   ${check} Copied CLAUDE.md to ${CLAUDE_MD}"
+echo -e "   ${info} Open Claude Code, paste your top 5 queries, and Claude learns your data model."
 
 # ---------------------------------------------------------------------------
 # Step 10: Copy rules
 # ---------------------------------------------------------------------------
 echo -e "\n${arrow} ${BOLD}Installing rules...${NC}"
 
-RULES_SRC="${REPO_DIR}/templates/rules"
+# Copy all agents (they're essential for the orchestration model)
+AGENTS_SRC="${REPO_DIR}/.claude/agents"
+if [[ -d "$AGENTS_SRC" ]]; then
+    for agent_file in "${AGENTS_SRC}"/*.md; do
+        if [[ -f "$agent_file" ]]; then
+            cp "$agent_file" "${CLAUDE_DIR}/agents/"
+            echo -e "   ${check} $(basename "$agent_file" .md)"
+        fi
+    done
+fi
+
+# Copy rules
+RULES_SRC="${REPO_DIR}/.claude/rules"
 if [[ -d "$RULES_SRC" ]]; then
     for rule in sql-conventions data-privacy; do
         if [[ -f "${RULES_SRC}/${rule}.md" ]]; then
@@ -296,8 +257,7 @@ if [[ -d "$RULES_SRC" ]]; then
         fi
     fi
 else
-    echo -e "   ${warn} Rules source directory not found at ${RULES_SRC}"
-    echo -e "   ${warn} You can copy rules manually from the repository later."
+    echo -e "   ${warn} Rules source not found at ${RULES_SRC}"
 fi
 
 # ---------------------------------------------------------------------------
@@ -305,32 +265,24 @@ fi
 # ---------------------------------------------------------------------------
 echo -e "\n${arrow} ${BOLD}Configuring hooks and settings...${NC}"
 
-HOOKS_SRC="${REPO_DIR}/templates/hooks"
+HOOKS_SRC="${REPO_DIR}/.claude/hooks"
 if [[ -d "$HOOKS_SRC" ]]; then
-    for hook_file in "${HOOKS_SRC}"/*; do
+    for hook_file in "${HOOKS_SRC}"/*.sh; do
         if [[ -f "$hook_file" ]]; then
             cp "$hook_file" "${CLAUDE_DIR}/hooks/"
+            chmod +x "${CLAUDE_DIR}/hooks/$(basename "$hook_file")"
             echo -e "   ${check} $(basename "$hook_file")"
         fi
     done
-else
-    echo -e "   ${warn} No hooks templates found — skipping"
 fi
 
-SETTINGS_SRC="${REPO_DIR}/templates/settings.json"
+SETTINGS_SRC="${REPO_DIR}/templates/settings.json.template"
 if [[ -f "$SETTINGS_SRC" ]]; then
     cp "$SETTINGS_SRC" "${CLAUDE_DIR}/settings.json"
     echo -e "   ${check} settings.json"
 else
-    # Create a minimal settings.json
-    cat > "${CLAUDE_DIR}/settings.json" << 'HEREDOC'
-{
-  "analytics": {
-    "enabled": true
-  }
-}
-HEREDOC
-    echo -e "   ${check} settings.json (default)"
+    cp "${REPO_DIR}/.claude/settings.json" "${CLAUDE_DIR}/settings.json" 2>/dev/null || true
+    echo -e "   ${check} settings.json"
 fi
 
 # ---------------------------------------------------------------------------

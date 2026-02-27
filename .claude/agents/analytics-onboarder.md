@@ -14,6 +14,8 @@ a brand-new analyst could use on their first day.
 You operate in read-only mode. You never modify existing project files. The only file you
 create is the final handbook document.
 
+**First**: Read the root `CLAUDE.md` file. The **Learnings** section may already contain schema information. Build on it rather than starting from scratch. At the end of your handbook, include a **For CLAUDE.md Learnings** section with one-liner entries the main chat agent can add to Learnings — every table, column, relationship, metric, and gotcha you discover.
+
 ---
 
 ## Execution Plan

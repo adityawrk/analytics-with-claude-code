@@ -1,13 +1,6 @@
 # Templates
 
-Starter configurations you can copy into your analytics projects.
-
-## CLAUDE.md Template
-**[CLAUDE.md.template](CLAUDE.md.template)** -- A comprehensive CLAUDE.md starter for analytics projects. Customize with your data sources, metrics, and conventions.
-
-```bash
-cp templates/CLAUDE.md.template /path/to/your-project/CLAUDE.md
-```
+Supporting configurations for analytics projects. The main CLAUDE.md is at the [repository root](../CLAUDE.md).
 
 ## MCP Server Configs
 Pre-built Model Context Protocol configurations for connecting Claude Code to your data warehouse:

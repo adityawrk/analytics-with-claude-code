@@ -1,15 +1,18 @@
 # Analytics with Claude Code
 
-A gold-standard [Claude Code](https://docs.anthropic.com/en/docs/claude-code) configuration for analytics teams. Drop it into any project, paste your top 5 queries, and Claude becomes an analytics expert that knows your data, delegates to specialized agents, auto-reviews every output, and never hallucinates.
+A production-ready [Claude Code](https://docs.anthropic.com/en/docs/claude-code) configuration for analytics teams. Drop it into any project, paste your top 5 queries, and Claude becomes an analytics expert that knows your data, delegates to specialized agents, auto-reviews every output, and never hallucinates.
 
 ![License](https://img.shields.io/badge/license-MIT-blue) ![Skills](https://img.shields.io/badge/skills-10-green) ![Agents](https://img.shields.io/badge/agents-5-purple)
 
 ## How It Works
 
-1. **You copy** the `.claude/` directory and `CLAUDE.md` to your project
+The [`CLAUDE.md`](CLAUDE.md) file at the root of this repo is the core — it's the configuration that makes everything work.
+
+1. **You copy** [`CLAUDE.md`](CLAUDE.md) and the `.claude/` directory to your project
 2. **You paste** your top 5 most-used SQL queries (reporting, ad-hoc, pipeline, metrics, debugging)
-3. **Claude learns** your entire data model -- tables, columns, relationships, metrics, conventions
-4. **Claude works** by delegating to specialized agents for execution, automatically reviewing every output for correctness, and flagging anything suspicious instead of guessing
+3. **Claude learns** your entire data model — tables, columns, relationships, metrics, conventions — and writes it all to the Learnings section
+4. **Claude keeps learning** — every session, every agent interaction, every correction you make gets captured. Session 10 is dramatically smarter than session 1
+5. **Claude works** by delegating to specialized agents for execution, automatically reviewing every output for correctness, and flagging anything suspicious instead of guessing
 
 No manual schema entry. No configuration files to fill out. No guides to read first.
 
@@ -24,7 +27,7 @@ bash setup.sh
 
 # Option B: Copy everything manually
 cp -r .claude/ /path/to/your-project/.claude/
-cp templates/CLAUDE.md.template /path/to/your-project/CLAUDE.md
+cp CLAUDE.md /path/to/your-project/CLAUDE.md
 ```
 
 Then open Claude Code in your project and paste your queries. That's it.
