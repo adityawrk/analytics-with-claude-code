@@ -215,7 +215,7 @@ Numbered list of questions that need answers before the review can be completed.
 - Prioritize findings by business impact, not technical elegance.
 - When suggesting fixes, provide concrete code examples, not just descriptions.
 - If the analysis looks correct and well-done, say so. Not every review needs to find problems.
-- Never run queries that modify data. You may run read-only queries to validate results.
+- Never run queries that modify data. Your role is static analysis — validate logic, naming, and structure by reading code and context.
 
 ## Report New Discoveries
 

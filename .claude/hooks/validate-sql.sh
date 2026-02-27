@@ -9,9 +9,10 @@
 # Input: Reads a JSON object from stdin (Claude Code hook protocol).
 #        The JSON contains tool_name and tool_input fields.
 #
-# Output: Prints a JSON object to stdout with:
-#   - "decision": "block" | "approve" | "warn"
-#   - "reason": explanation string (for block/warn)
+# Output (PreToolUse protocol):
+#   - To DENY:  JSON with hookSpecificOutput.permissionDecision = "deny"
+#   - To WARN:  JSON with hookSpecificOutput.additionalContext = "..."
+#   - To ALLOW: exit 0 with no output
 #
 # Dependencies: jq (for JSON parsing)
 # =============================================================================
@@ -22,8 +23,7 @@ set -euo pipefail
 # Check dependencies
 # -----------------------------------------------------------------------------
 if ! command -v jq &> /dev/null; then
-    # If jq is not installed, approve by default rather than blocking all work.
-    echo '{"decision": "approve", "reason": "jq not installed; skipping SQL validation"}'
+    # If jq is not installed, allow by default rather than blocking all work.
     exit 0
 fi
 
@@ -45,8 +45,7 @@ case "$TOOL_NAME" in
     Bash|execute_sql|run_query|sql_query)
         ;;
     *)
-        # Not a SQL-related tool; approve and exit.
-        echo '{"decision": "approve"}'
+        # Not a SQL-related tool; allow and exit.
         exit 0
         ;;
 esac
@@ -72,15 +71,13 @@ if [ -z "$SQL" ] && [ "$TOOL_NAME" = "Bash" ]; then
     if echo "$COMMAND" | grep -qiE '(psql|mysql|bq |bigquery|snowsql|dbt run|sqlite3|clickhouse|duckdb)'; then
         SQL="$COMMAND"
     else
-        # Not a SQL command; approve.
-        echo '{"decision": "approve"}'
+        # Not a SQL command; allow.
         exit 0
     fi
 fi
 
-# If we still have no SQL to validate, approve.
+# If we still have no SQL to validate, allow.
 if [ -z "$SQL" ]; then
-    echo '{"decision": "approve"}'
     exit 0
 fi
 
@@ -89,6 +86,35 @@ fi
 # -----------------------------------------------------------------------------
 # Convert to uppercase for case-insensitive matching. Strip extra whitespace.
 SQL_UPPER="$(echo "$SQL" | tr '[:lower:]' '[:upper:]' | tr -s '[:space:]' ' ')"
+
+# -----------------------------------------------------------------------------
+# Helper: deny a tool call (PreToolUse protocol)
+# -----------------------------------------------------------------------------
+deny() {
+    local reason="$1"
+    jq -n --arg reason "$reason" '{
+        hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            permissionDecision: "deny",
+            permissionDecisionReason: $reason
+        }
+    }'
+    exit 0
+}
+
+# -----------------------------------------------------------------------------
+# Helper: warn about a tool call (PreToolUse protocol)
+# -----------------------------------------------------------------------------
+warn() {
+    local context="$1"
+    jq -n --arg ctx "$context" '{
+        hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            additionalContext: $ctx
+        }
+    }'
+    exit 0
+}
 
 # -----------------------------------------------------------------------------
 # BLOCK: Destructive statements targeting production
@@ -130,8 +156,7 @@ for PATTERN in "${DESTRUCTIVE_PATTERNS[@]}"; do
         REASON+="dev/staging/sandbox environment. If this is intentional, rewrite the "
         REASON+="query to explicitly reference a dev or staging schema."
 
-        echo "{\"decision\": \"block\", \"reason\": $(echo "$REASON" | jq -Rs '.')}"
-        exit 0
+        deny "$REASON"
     fi
 done
 
@@ -151,8 +176,7 @@ for PATTERN in "${PROD_WRITE_PATTERNS[@]}"; do
         REASON="Blocked: query references a production write endpoint (matched pattern: '${PATTERN}'). "
         REASON+="Analytics queries should only read from read replicas or warehouse tables."
 
-        echo "{\"decision\": \"block\", \"reason\": $(echo "$REASON" | jq -Rs '.')}"
-        exit 0
+        deny "$REASON"
     fi
 done
 
@@ -169,8 +193,7 @@ if echo "$SQL_UPPER" | grep -qE "SELECT \*" && \
         REASON+="This may scan a large amount of data. Consider selecting only "
         REASON+="the columns you need, or add a LIMIT for exploratory queries."
 
-        echo "{\"decision\": \"warn\", \"reason\": $(echo "$REASON" | jq -Rs '.')}"
-        exit 0
+        warn "$REASON"
     fi
 fi
 
@@ -187,13 +210,11 @@ if echo "$SQL_UPPER" | grep -qE "(SELECT .* FROM|DELETE FROM|UPDATE )" && \
         REASON+="If this is intentional (e.g., full table aggregation), this is fine. "
         REASON+="Otherwise, consider adding filters to reduce data scanned."
 
-        echo "{\"decision\": \"warn\", \"reason\": $(echo "$REASON" | jq -Rs '.')}"
-        exit 0
+        warn "$REASON"
     fi
 fi
 
 # -----------------------------------------------------------------------------
-# APPROVE: Query passed all checks
+# ALLOW: Query passed all checks
 # -----------------------------------------------------------------------------
-echo '{"decision": "approve"}'
 exit 0

@@ -11,10 +11,11 @@ Pre-built Model Context Protocol configurations for connecting Claude Code to yo
 | [BigQuery](mcp-bigquery.json) | Google BigQuery | `mcp-bigquery.json` |
 | [Snowflake](mcp-snowflake.json) | Snowflake | `mcp-snowflake.json` |
 | [DuckDB](mcp-duckdb.json) | DuckDB | `mcp-duckdb.json` |
+| [CSV / Parquet](mcp-csv.json) | CSV and Parquet files (via DuckDB) | `mcp-csv.json` |
 
 ```bash
-# Copy to your project root as .mcp.json
-cp templates/mcp-postgres.json /path/to/your-project/.mcp.json
+# Copy to your project's .claude/ directory
+cp templates/mcp-postgres.json /path/to/your-project/.claude/mcp.json
 # Then set environment variables for your connection details
 ```
 

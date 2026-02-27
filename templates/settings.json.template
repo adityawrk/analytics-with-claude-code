@@ -39,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/validate-sql.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/validate-sql.sh"
           }
         ]
       },
@@ -48,7 +48,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/validate-sql.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/validate-sql.sh"
           }
         ]
       }
@@ -59,7 +59,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/audit-log.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/audit-log.sh"
           }
         ]
       },
@@ -68,7 +68,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/auto-format-sql.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/auto-format-sql.sh"
           }
         ]
       },
@@ -77,7 +77,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/auto-format-sql.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/auto-format-sql.sh"
           }
         ]
       }
