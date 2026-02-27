@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /Users/aditya/projects/analytics-with-claude-code/.claude/hooks/validate-sql.sh"
+            "command": "bash .claude/hooks/validate-sql.sh"
           }
         ]
       },
@@ -15,18 +15,27 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /Users/aditya/projects/analytics-with-claude-code/.claude/hooks/validate-sql.sh"
+            "command": "bash .claude/hooks/validate-sql.sh"
           }
         ]
       }
     ],
     "PostToolUse": [
       {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/audit-log.sh"
+          }
+        ]
+      },
+      {
         "matcher": "Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "bash /Users/aditya/projects/analytics-with-claude-code/.claude/hooks/auto-format-sql.sh"
+            "command": "bash .claude/hooks/auto-format-sql.sh"
           }
         ]
       },
@@ -35,7 +44,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /Users/aditya/projects/analytics-with-claude-code/.claude/hooks/auto-format-sql.sh"
+            "command": "bash .claude/hooks/auto-format-sql.sh"
           }
         ]
       }

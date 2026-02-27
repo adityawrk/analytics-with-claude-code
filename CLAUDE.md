@@ -1,26 +1,40 @@
-# Analytics with Claude Code
+# Analytics with Claude Code -- Contributor Guide
 
-This is a public educational repository teaching analytics practitioners how to use Claude Code effectively.
+Open-source repo. The product is `templates/CLAUDE.md.template` and everything in `.claude/`. MIT licensed.
 
-## Project Structure
-- `guides/` - Markdown conceptual guides (no executable code)
-- `.claude/skills/` - Reusable Claude Code skills for analytics tasks
-- `.claude/agents/` - Custom subagent definitions for analytics workflows
-- `.claude/rules/` - Modular rules (SQL conventions, data privacy, metrics)
-- `.claude/hooks/` - Hook scripts (SQL validation, auto-formatting)
-- `examples/` - Complete working examples with sample data
-- `templates/` - Copy-paste starter templates for analytics projects
+## What Matters
 
-## Conventions
-- All skills use YAML frontmatter with name, description, and allowed-tools
-- Agent definitions use standard Claude Code subagent frontmatter
-- Guides are numbered (01-, 02-) to suggest reading order
-- Example directories are self-contained with their own README and data
-- Use snake_case for file names, kebab-case for directory names
+The CLAUDE.md template is the product. Everything else supports it. When adding or changing anything, ask: "Does this make the CLAUDE.md experience better for someone who just dropped it into their project?"
 
-## Writing Style
-- Write for analytics practitioners (data analysts, analytics engineers, data scientists)
-- Assume familiarity with SQL, Python, and basic statistics
-- Assume NO prior familiarity with Claude Code
-- Every guide should be actionable - include copy-paste examples
-- Skills and agents should be production-ready, not toy examples
+## Architecture
+
+- `.claude/skills/` -- Slash-command skills. YAML frontmatter: `name`, `description`.
+- `.claude/agents/` -- Subagents. YAML frontmatter: `name`, `description`, `model`, `tools`.
+- `.claude/rules/` -- Auto-applied rules. YAML frontmatter: `description`, `globs`.
+- `.claude/hooks/` -- Bash scripts reading JSON from stdin. Exit code 2 blocks.
+- `templates/` -- The gold-standard CLAUDE.md and configs users copy.
+- `demo/` -- DuckDB batteries-included demo. Zero external deps.
+- `challenges/` -- Progressive analytics challenges.
+- `guides/` -- Reference docs (numbered 01-08).
+
+## Quality Bar
+
+- Skills MUST handle nulls, empty datasets, division by zero.
+- Agents MUST specify when to use AND when NOT to use them.
+- SQL uses CTEs, trailing commas, snake_case, inclusive-start/exclusive-end dates.
+- NEVER fabricate data, testimonials, or results in examples.
+- NEVER hardcode paths, credentials, or database names.
+
+## The Philosophy
+
+Users should NEVER have to write CLAUDE.md by hand. They copy the template, paste their top 5 queries, and Claude learns everything from the queries. The CLAUDE.md instructs Claude to auto-delegate to agents for execution, auto-review with the analytics-reviewer, and never hallucinate. Keep this philosophy in every change.
+
+## Self-Learning
+
+When you discover a mistake or pattern while working on this repo:
+1. Abstract it into a one-line directive (ALWAYS/NEVER + why)
+2. Add it below. Max 20 entries.
+
+## Learnings
+
+<!-- Claude populates this as it works. -->
