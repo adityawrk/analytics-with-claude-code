@@ -45,7 +45,7 @@ Found something broken, misleading, or missing? [Open an issue](../../issues).
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/analytics-with-claude-code.git
+git clone https://github.com/adityawrk/analytics-with-claude-code.git
 cd analytics-with-claude-code
 
 # That's it. This is a documentation/configuration repo.

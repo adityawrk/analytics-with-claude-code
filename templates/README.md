@@ -10,6 +10,7 @@ Pre-built Model Context Protocol configurations for connecting Claude Code to yo
 | [PostgreSQL](mcp-postgres.json) | PostgreSQL, Amazon RDS, Aurora | `mcp-postgres.json` |
 | [BigQuery](mcp-bigquery.json) | Google BigQuery | `mcp-bigquery.json` |
 | [Snowflake](mcp-snowflake.json) | Snowflake | `mcp-snowflake.json` |
+| [DuckDB](mcp-duckdb.json) | DuckDB | `mcp-duckdb.json` |
 
 ```bash
 # Copy to your project root as .mcp.json

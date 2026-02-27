@@ -101,7 +101,8 @@ if command -v claude &>/dev/null; then
     echo -e "   ${check} Claude Code CLI found"
 else
     echo -e "   ${fail} Claude Code CLI not found"
-    echo -e "   ${warn} Install it first: ${BOLD}npm install -g @anthropic-ai/claude-code${NC}"
+    echo -e "   ${warn} Install it: ${BOLD}curl -fsSL https://claude.ai/install.sh | bash${NC}"
+    echo -e "   ${warn} Or via Homebrew: ${BOLD}brew install --cask claude-code${NC}"
     echo -e "   ${warn} Continuing anyway — you can install it later."
 fi
 

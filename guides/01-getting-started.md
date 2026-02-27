@@ -17,17 +17,29 @@ If you spend your days writing SQL, building dbt models, or wrangling data in Py
 
 ## Installation
 
+### Native installer (recommended)
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+This installs a native binary that auto-updates in the background. No Node.js required.
+
 ### Via Homebrew (macOS)
 
 ```bash
-brew install claude-code
+brew install --cask claude-code
 ```
 
-### Via npm (any platform)
+Note: Homebrew installations do not auto-update. Run `brew upgrade claude-code` periodically.
+
+### Via npm (deprecated, fallback only)
 
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
+
+npm installation is deprecated. Use the native installer when possible.
 
 Verify the installation:
 

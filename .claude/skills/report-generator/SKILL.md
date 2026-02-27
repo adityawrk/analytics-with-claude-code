@@ -16,7 +16,7 @@ You are a senior analytics professional generating a polished, stakeholder-ready
 
 Ask the user (or infer from context) which type of report to generate:
 
-1. **Weekly Business Review** -- recurring snapshot of key metrics.
+1. **Weekly Business Review** -- recurring snapshot of key metrics. (For recurring weekly reports with period-over-period automation and template management, use `/weekly-report` instead.)
 2. **Monthly Business Review** -- deeper analysis with trends and forecasts.
 3. **Ad-Hoc Deep Dive** -- focused investigation into a specific question.
 4. **Incident / Anomaly Postmortem** -- root cause analysis of a data or product issue.

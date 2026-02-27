@@ -91,21 +91,11 @@ See `.claude/rules/data-privacy.md` (auto-applied). Key rules: no raw PII in out
 
 ## Continuous Learning
 
-This configuration puts Claude in an always-learning mode. The architecture creates a feedback loop: every query you run, every agent interaction, every correction you make permanently enriches Claude's understanding of your data. Here's how:
+After every agent run, check for a "New Discoveries" section in the agent's response. Add any new schema details, relationships, or gotchas to the Learnings section below.
 
-**The learning loop:**
-1. **Session 1**: You paste your top 5 queries. Claude reverse-engineers your data model and writes it to the Learnings section below.
-2. **Every agent run**: Agents (`data-explorer`, `sql-developer`, `analytics-reviewer`, etc.) report back a "New Discoveries" section with schema details, relationships, and gotchas they found. Claude captures these in Learnings automatically.
-3. **Every correction**: When you correct a metric definition, fix a table name, or point out a business rule -- Claude records it verbatim so it never gets it wrong again.
-4. **Every failure**: When a query errors because of a wrong assumption, Claude updates the learning and notes the gotcha for next time.
-5. **Session N+1 is smarter than session N**: Claude reads Learnings at the start of every session. The more you work, the more it knows.
+When the user corrects a metric definition, fixes a table name, or points out a business rule — record it verbatim. When a query errors due to a wrong assumption, note the gotcha.
 
-**What gets captured:**
-- Schema details: table names, column names, data types, grain, partitioning
-- Relationships: how tables join, what the cardinality is, which JOINs are safe
-- Business rules: metric definitions, status codes that mean "active", date cutoffs, exclusion filters
-- Gotchas: columns that look numeric but are strings, tables with delayed data, timezone traps
-- User preferences: how they like output formatted, which metrics they care about most, naming conventions
+Read Learnings at the start of every session.
 
 **Rules:**
 - One learning per line. Format: `- [SCHEMA/METRIC/GOTCHA/PREFERENCE] description`
