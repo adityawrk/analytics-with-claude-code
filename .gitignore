@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_metadata/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Data (large files should use Git LFS or download scripts)
+*.parquet
+*.feather
+data/raw/
+data/processed/
+!data/.gitkeep
+!**/data/*.csv
+!**/data/*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code (local-only files)
+.claude/CLAUDE.local.md
+.claude/worktrees/
+
+# Output
+output/
+*.html
+!guides/*.html

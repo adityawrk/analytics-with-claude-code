@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "analytics-db": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "${ANALYTICS_DATABASE_URL}"
+      ],
+      "env": {
+        "ANALYTICS_DATABASE_URL": ""
+      }
+    }
+  }
+}

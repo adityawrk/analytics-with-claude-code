@@ -1,0 +1,58 @@
+# [Your Project Name]
+
+## Data Sources
+
+### Primary Database
+- Engine: PostgreSQL / BigQuery / Snowflake / [your engine]
+- Host: [host]
+- Database: [database name]
+- Key schemas: [public, analytics, staging, etc.]
+
+### Key Tables
+- `orders` -- Transaction data (grain: one row per order)
+- `users` -- User dimension table (grain: one row per user)
+- `events` -- Event stream (grain: one row per event)
+- [Add your tables here]
+
+### Data Freshness
+- Orders: refreshed every [frequency], lag: [typical lag]
+- Events: near real-time, max lag: [typical lag]
+- User attributes: refreshed [frequency]
+
+## SQL Conventions
+- Use CTEs over subqueries for readability
+- snake_case for all identifiers
+- Trailing commas in SELECT lists
+- Filter on partitioned/indexed columns first
+- Date ranges: `WHERE date >= '2024-01-01' AND date < '2024-02-01'` (inclusive start, exclusive end)
+- Always include a date filter on large tables
+
+## Metric Definitions
+- **Revenue**: SUM of `orders.total_amount` WHERE `status != 'cancelled'`
+- **Active Users (DAU)**: COUNT(DISTINCT user_id) from `events` WHERE date = [target_date]
+- **Conversion Rate**: orders / sessions within same attribution window
+- [Add your metrics here]
+
+## Naming Conventions (dbt)
+- Staging models: `stg_[source]__[table]`
+- Intermediate models: `int_[entity]__[transformation]`
+- Fact tables: `fct_[event/process]`
+- Dimension tables: `dim_[entity]`
+
+## Common Commands
+- Run dbt: `dbt run --select +model_name`
+- Test dbt: `dbt test --select model_name`
+- Format SQL: `sqlfluff fix --dialect [postgres/bigquery/snowflake] [file]`
+- Run analysis: `python scripts/[script_name].py`
+
+## Environment
+- Python: 3.11+
+- Package manager: pip / uv / poetry
+- Virtual env: `.venv/`
+- Config: `.env` file (never commit this)
+
+## Important Notes
+- NEVER write to production tables directly
+- Always validate row counts after transformations
+- Check data freshness before reporting
+- Minimum group size of 5 for any user-level aggregation (privacy)

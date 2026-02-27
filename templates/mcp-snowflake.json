@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "snowflake": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anthropic-ai/mcp-server-snowflake",
+        "--account",
+        "${SNOWFLAKE_ACCOUNT}",
+        "--database",
+        "${SNOWFLAKE_DATABASE}",
+        "--warehouse",
+        "${SNOWFLAKE_WAREHOUSE}"
+      ],
+      "env": {
+        "SNOWFLAKE_ACCOUNT": "",
+        "SNOWFLAKE_DATABASE": "",
+        "SNOWFLAKE_WAREHOUSE": "",
+        "SNOWFLAKE_USER": "",
+        "SNOWFLAKE_PASSWORD": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "bigquery": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anthropic-ai/mcp-server-bigquery",
+        "--project-id",
+        "${GCP_PROJECT_ID}"
+      ],
+      "env": {
+        "GCP_PROJECT_ID": "",
+        "GOOGLE_APPLICATION_CREDENTIALS": ""
+      }
+    }
+  }
+}

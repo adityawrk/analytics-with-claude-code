@@ -1,0 +1,44 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/aditya/projects/analytics-with-claude-code/.claude/hooks/validate-sql.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "execute_sql",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/aditya/projects/analytics-with-claude-code/.claude/hooks/validate-sql.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/aditya/projects/analytics-with-claude-code/.claude/hooks/auto-format-sql.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/aditya/projects/analytics-with-claude-code/.claude/hooks/auto-format-sql.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
