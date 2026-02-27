@@ -97,18 +97,18 @@ SQL_UPPER="$(echo "$SQL" | tr '[:lower:]' '[:upper:]' | tr -s '[:space:]' ' ')"
 # schemas/databases.
 
 DESTRUCTIVE_PATTERNS=(
-    "INSERT INTO"
-    "UPDATE .* SET"
-    "DELETE FROM"
-    "DROP TABLE"
-    "DROP VIEW"
-    "DROP SCHEMA"
-    "DROP DATABASE"
-    "TRUNCATE"
-    "ALTER TABLE .* DROP"
-    "ALTER TABLE .* RENAME"
-    "CREATE OR REPLACE TABLE"
-    "MERGE INTO"
+    "\bINSERT INTO\b"
+    "\bUPDATE\b .* \bSET\b"
+    "\bDELETE FROM\b"
+    "\bDROP TABLE\b"
+    "\bDROP VIEW\b"
+    "\bDROP SCHEMA\b"
+    "\bDROP DATABASE\b"
+    "\bTRUNCATE\b"
+    "\bALTER TABLE\b .* \bDROP\b"
+    "\bALTER TABLE\b .* \bRENAME\b"
+    "\bCREATE OR REPLACE TABLE\b"
+    "\bMERGE INTO\b"
 )
 
 # Patterns that indicate dev/staging (safe targets)

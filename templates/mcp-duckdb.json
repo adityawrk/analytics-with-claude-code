@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "analytics-db": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "duckdb-mcp-server",
+        "${DUCKDB_PATH}"
+      ],
+      "env": {
+        "DUCKDB_PATH": ""
+      }
+    }
+  }
+}

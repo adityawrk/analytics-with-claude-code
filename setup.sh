@@ -8,6 +8,38 @@
 
 set -euo pipefail
 
+# ---------------------------------------------------------------------------
+# Non-interactive mode: bash setup.sh --stack=duckdb --role=analyst --target=.
+# ---------------------------------------------------------------------------
+NONINTERACTIVE=false
+ARG_STACK=""
+ARG_ROLE=""
+ARG_TARGET=""
+
+for arg in "$@"; do
+    case "$arg" in
+        --stack=*)   ARG_STACK="${arg#*=}" ;;
+        --role=*)    ARG_ROLE="${arg#*=}" ;;
+        --target=*)  ARG_TARGET="${arg#*=}" ;;
+        --help|-h)
+            echo "Usage: bash setup.sh [OPTIONS]"
+            echo ""
+            echo "Interactive (default): run with no arguments for the guided wizard."
+            echo ""
+            echo "Non-interactive:"
+            echo "  --stack=STACK    postgres, snowflake, bigquery, duckdb, or csv"
+            echo "  --role=ROLE      analyst, engineer, or scientist"
+            echo "  --target=PATH    Target directory (default: current directory)"
+            echo ""
+            echo "Example: bash setup.sh --stack=duckdb --role=analyst --target=."
+            exit 0
+            ;;
+    esac
+done
+
+if [[ -n "$ARG_STACK" && -n "$ARG_ROLE" ]]; then
+    NONINTERACTIVE=true
+fi
 
 # ---------------------------------------------------------------------------
 # Colors and symbols
@@ -59,7 +91,9 @@ prompt_choice() {
 # ---------------------------------------------------------------------------
 # Step 1: Check prerequisites
 # ---------------------------------------------------------------------------
-print_header
+if [[ "$NONINTERACTIVE" == false ]]; then
+    print_header
+fi
 
 echo -e "${arrow} ${BOLD}Checking prerequisites...${NC}"
 
@@ -88,40 +122,55 @@ fi
 # ---------------------------------------------------------------------------
 # Step 2: Choose data stack
 # ---------------------------------------------------------------------------
-prompt_choice "What is your primary data stack?" \
-    "PostgreSQL" \
-    "Snowflake" \
-    "BigQuery" \
-    "DuckDB" \
-    "CSV / Parquet files"
-STACK_CHOICE=$REPLY
-STACK_NAMES=("postgres" "snowflake" "bigquery" "duckdb" "csv")
-STACK="${STACK_NAMES[$((STACK_CHOICE-1))]}"
-echo -e "   ${check} Selected: ${BOLD}${STACK}${NC}"
+if [[ "$NONINTERACTIVE" == true ]]; then
+    STACK="$ARG_STACK"
+    echo -e "${arrow} ${BOLD}Data stack: ${STACK}${NC}"
+else
+    prompt_choice "What is your primary data stack?" \
+        "PostgreSQL" \
+        "Snowflake" \
+        "BigQuery" \
+        "DuckDB" \
+        "CSV / Parquet files"
+    STACK_CHOICE=$REPLY
+    STACK_NAMES=("postgres" "snowflake" "bigquery" "duckdb" "csv")
+    STACK="${STACK_NAMES[$((STACK_CHOICE-1))]}"
+    echo -e "   ${check} Selected: ${BOLD}${STACK}${NC}"
+fi
 
 # ---------------------------------------------------------------------------
 # Step 3: Choose role
 # ---------------------------------------------------------------------------
-prompt_choice "What best describes your role?" \
-    "Data Analyst" \
-    "Analytics Engineer" \
-    "Data Scientist"
-ROLE_CHOICE=$REPLY
-ROLE_NAMES=("analyst" "engineer" "scientist")
-ROLE="${ROLE_NAMES[$((ROLE_CHOICE-1))]}"
-echo -e "   ${check} Selected: ${BOLD}${ROLE}${NC}"
+if [[ "$NONINTERACTIVE" == true ]]; then
+    ROLE="$ARG_ROLE"
+    echo -e "${arrow} ${BOLD}Role: ${ROLE}${NC}"
+else
+    prompt_choice "What best describes your role?" \
+        "Data Analyst" \
+        "Analytics Engineer" \
+        "Data Scientist"
+    ROLE_CHOICE=$REPLY
+    ROLE_NAMES=("analyst" "engineer" "scientist")
+    ROLE="${ROLE_NAMES[$((ROLE_CHOICE-1))]}"
+    echo -e "   ${check} Selected: ${BOLD}${ROLE}${NC}"
+fi
 
 # ---------------------------------------------------------------------------
 # Step 4: Choose target directory
 # ---------------------------------------------------------------------------
-prompt_choice "Where should we set up Claude Code?" \
-    "Current directory ($(pwd))" \
-    "Specify a path"
-if [[ $REPLY -eq 2 ]]; then
-    read -rp "   Enter the full path: " TARGET_DIR
+if [[ "$NONINTERACTIVE" == true ]]; then
+    TARGET_DIR="${ARG_TARGET:-$(pwd)}"
     TARGET_DIR="${TARGET_DIR/#\~/$HOME}"
 else
-    TARGET_DIR="$(pwd)"
+    prompt_choice "Where should we set up Claude Code?" \
+        "Current directory ($(pwd))" \
+        "Specify a path"
+    if [[ $REPLY -eq 2 ]]; then
+        read -rp "   Enter the full path: " TARGET_DIR
+        TARGET_DIR="${TARGET_DIR/#\~/$HOME}"
+    else
+        TARGET_DIR="$(pwd)"
+    fi
 fi
 
 if [[ ! -d "$TARGET_DIR" ]]; then
@@ -136,13 +185,17 @@ echo -e "   ${check} Target: ${BOLD}${TARGET_DIR}${NC}"
 # ---------------------------------------------------------------------------
 CLAUDE_DIR="${TARGET_DIR}/.claude"
 if [[ -d "$CLAUDE_DIR" ]]; then
-    echo -e "\n   ${warn} A ${BOLD}.claude/${NC} directory already exists at ${TARGET_DIR}"
-    read -rp "   Overwrite it? [y/N]: " overwrite
-    if [[ ! "$overwrite" =~ ^[Yy]$ ]]; then
-        echo -e "   Aborting. Your existing configuration is untouched."
-        exit 0
+    if [[ "$NONINTERACTIVE" == true ]]; then
+        rm -rf "$CLAUDE_DIR"
+    else
+        echo -e "\n   ${warn} A ${BOLD}.claude/${NC} directory already exists at ${TARGET_DIR}"
+        read -rp "   Overwrite it? [y/N]: " overwrite
+        if [[ ! "$overwrite" =~ ^[Yy]$ ]]; then
+            echo -e "   Aborting. Your existing configuration is untouched."
+            exit 0
+        fi
+        rm -rf "$CLAUDE_DIR"
     fi
-    rm -rf "$CLAUDE_DIR"
 fi
 
 # ---------------------------------------------------------------------------
@@ -194,7 +247,7 @@ if [[ -d "$SKILLS_SRC" ]]; then
     fi
 
     if [[ "$ROLE" == "scientist" ]]; then
-        for skill in ab-test metric-calculator report-generator; do
+        for skill in ab-test metric-calculator sql-optimizer metric-reconciler; do
             if [[ -d "${SKILLS_SRC}/${skill}" ]]; then
                 mkdir -p "${CLAUDE_DIR}/skills/${skill}"
                 cp "${SKILLS_SRC}/${skill}/SKILL.md" "${CLAUDE_DIR}/skills/${skill}/"

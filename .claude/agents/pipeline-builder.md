@@ -41,9 +41,8 @@ Read the root `CLAUDE.md` file. The **Learnings** section contains known schema,
    - Understand the grain of each source table.
    - Identify the key business entities (customers, orders, products, events, etc.).
 
-3. **Follow existing conventions.** Match the project's established patterns for:
+3. **Follow existing conventions.** SQL style rules (CTEs, trailing commas, snake_case, keyword casing) are defined in `.claude/rules/sql-conventions.md` and auto-apply to all `.sql` files. Additionally match:
    - File naming (`stg_<source>__<table>.sql`, `int_<noun>_<verb>.sql`, `fct_<noun>.sql`, `dim_<noun>.sql`)
-   - SQL style (CTEs vs subqueries, keyword casing, alias conventions)
    - YAML structure (descriptions, tests, meta fields)
    - Materialization strategies (view, table, incremental, ephemeral)
 
@@ -89,7 +88,7 @@ select * from renamed
 - One staging model per source table. No exceptions.
 - Only rename, cast, and apply light cleaning. No joins. No aggregations.
 - Use `source()` macro, never hardcoded table references.
-- Prefix columns by type: IDs end in `_id`, booleans start with `is_` or `has_`, dates end in `_date`, timestamps end in `_at`.
+- Column naming conventions (see `.claude/rules/sql-conventions.md`): IDs end in `_id`, booleans `is_`/`has_`, dates `_date`, timestamps `_at`.
 - Cast all types explicitly. Do not rely on implicit casting.
 
 **YAML**: `models/staging/<source_name>/_<source>__models.yml`
