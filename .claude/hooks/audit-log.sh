@@ -6,7 +6,7 @@
 
 set -euo pipefail
 
-AUDIT_DIR=".analytics"
+AUDIT_DIR="${CLAUDE_PROJECT_DIR:-.}/.analytics"
 AUDIT_FILE="${AUDIT_DIR}/audit_log.md"
 
 # Safety: this is a logging hook, never block the user.

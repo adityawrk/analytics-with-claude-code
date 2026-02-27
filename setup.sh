@@ -187,6 +187,7 @@ echo -e "   ${check} Target: ${BOLD}${TARGET_DIR}${NC}"
 CLAUDE_DIR="${TARGET_DIR}/.claude"
 if [[ -d "$CLAUDE_DIR" ]]; then
     if [[ "$NONINTERACTIVE" == true ]]; then
+        echo -e "   ${warn} Overwriting existing .claude/ directory"
         rm -rf "$CLAUDE_DIR"
     else
         echo -e "\n   ${warn} A ${BOLD}.claude/${NC} directory already exists at ${TARGET_DIR}"

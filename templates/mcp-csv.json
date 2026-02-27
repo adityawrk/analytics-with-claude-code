@@ -1,4 +1,5 @@
 {
+  "_comment": "CSV/Parquet files are queried via DuckDB. Use read_csv_auto('path/to/file.csv') or read_parquet('path/to/file.parquet') in SQL. Set DUCKDB_PATH to a local .duckdb file (or leave empty for in-memory).",
   "mcpServers": {
     "analytics-db": {
       "type": "stdio",
