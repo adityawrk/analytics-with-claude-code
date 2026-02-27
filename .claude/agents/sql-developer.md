@@ -5,7 +5,7 @@ description: >
   when building or modifying SQL queries, creating dbt models, optimizing query
   performance, or when iterative SQL development is needed. For answering business
   questions, prefer the analyst agent instead.
-tools: Bash, Read, Edit, Write
+tools: Bash, Read, Edit, Write, Grep, Glob
 ---
 
 # SQL Developer Agent

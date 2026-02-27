@@ -173,6 +173,16 @@ if [[ -d "$SKILLS_SRC" ]]; then
     done
 
     # Role-specific skills
+    if [[ "$ROLE" == "analyst" ]]; then
+        for skill in report-generator metric-calculator ab-test; do
+            if [[ -d "${SKILLS_SRC}/${skill}" ]]; then
+                mkdir -p "${CLAUDE_DIR}/skills/${skill}"
+                cp "${SKILLS_SRC}/${skill}/SKILL.md" "${CLAUDE_DIR}/skills/${skill}/"
+                echo -e "   ${check} ${skill}"
+            fi
+        done
+    fi
+
     if [[ "$ROLE" == "engineer" ]]; then
         for skill in sql-optimizer metric-reconciler weekly-report; do
             if [[ -d "${SKILLS_SRC}/${skill}" ]]; then
@@ -207,7 +217,7 @@ if [[ -f "$MCP_FILE" ]]; then
     echo -e "   ${check} Copied mcp-${STACK}.json to .claude/mcp.json"
 else
     echo -e "   ${warn} No MCP template found for ${STACK}"
-    echo -e "   ${warn} You can configure MCP manually later — see guides/mcp-setup.md"
+    echo -e "   ${warn} You can configure MCP manually later — see guides/06-mcp-integrations.md"
 fi
 
 # ---------------------------------------------------------------------------
@@ -222,11 +232,10 @@ echo -e "   ${check} Copied CLAUDE.md to ${CLAUDE_MD}"
 echo -e "   ${arrow} Open Claude Code, paste your top 5 queries, and Claude learns your data model."
 
 # ---------------------------------------------------------------------------
-# Step 10: Copy rules
+# Step 10: Copy agents
 # ---------------------------------------------------------------------------
-echo -e "\n${arrow} ${BOLD}Installing rules...${NC}"
+echo -e "\n${arrow} ${BOLD}Installing agents...${NC}"
 
-# Copy all agents (they're essential for the orchestration model)
 AGENTS_SRC="${REPO_DIR}/.claude/agents"
 if [[ -d "$AGENTS_SRC" ]]; then
     for agent_file in "${AGENTS_SRC}"/*.md; do
@@ -237,28 +246,25 @@ if [[ -d "$AGENTS_SRC" ]]; then
     done
 fi
 
-# Copy rules
+# ---------------------------------------------------------------------------
+# Step 11: Copy rules
+# ---------------------------------------------------------------------------
+echo -e "\n${arrow} ${BOLD}Installing rules...${NC}"
+
 RULES_SRC="${REPO_DIR}/.claude/rules"
 if [[ -d "$RULES_SRC" ]]; then
-    for rule in sql-conventions data-privacy; do
+    for rule in sql-conventions data-privacy metric-definitions; do
         if [[ -f "${RULES_SRC}/${rule}.md" ]]; then
             cp "${RULES_SRC}/${rule}.md" "${CLAUDE_DIR}/rules/"
             echo -e "   ${check} ${rule}"
         fi
     done
-
-    if [[ "$ROLE" == "engineer" ]]; then
-        if [[ -f "${RULES_SRC}/metric-definitions.md" ]]; then
-            cp "${RULES_SRC}/metric-definitions.md" "${CLAUDE_DIR}/rules/"
-            echo -e "   ${check} metric-definitions"
-        fi
-    fi
 else
     echo -e "   ${warn} Rules source not found at ${RULES_SRC}"
 fi
 
 # ---------------------------------------------------------------------------
-# Step 11: Copy hooks and settings
+# Step 12: Copy hooks and settings
 # ---------------------------------------------------------------------------
 echo -e "\n${arrow} ${BOLD}Configuring hooks and settings...${NC}"
 

@@ -64,7 +64,7 @@ claude
 ## Quality Standards
 
 ### Skills
-- Frontmatter must include `name` and `description`
+- Frontmatter must include `name`, `description`, and `allowed-tools`
 - Instructions should be specific enough to produce consistent results
 - Include output format specification
 - Handle edge cases explicitly
