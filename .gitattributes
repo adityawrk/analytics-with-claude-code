@@ -1,0 +1,3 @@
+# GitHub Linguist: mark setup.sh as vendored so the language bar
+# reflects Python (from demo/setup_demo_data.py) instead of Shell 100%.
+setup.sh linguist-vendored=true
