@@ -45,7 +45,7 @@ Write SQL following these standards:
 - Always include a date filter unless the table is small.
 
 Execute the query. If you don't know the connection method, check:
-- `.claude/mcp.json` for MCP database connections
+- `.mcp.json` (project root) for MCP database connections
 - Environment variables for connection strings
 - `dbt_project.yml` / `profiles.yml` for dbt database configs
 - DuckDB files in the project directory

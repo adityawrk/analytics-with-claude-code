@@ -5,7 +5,7 @@ description: >
   asks to create dbt models, add data sources, build staging/intermediate/mart layers,
   write dbt tests, or restructure the transformation layer. Any task involving dbt files,
   schema.yml, or model materialization should go to this agent.
-tools: Bash, Read, Edit, Write, Glob, Grep
+tools: Bash, Read, Edit, Write, Grep, Glob
 ---
 
 # Pipeline Builder Agent

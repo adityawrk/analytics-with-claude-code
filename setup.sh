@@ -268,8 +268,8 @@ echo -e "\n${arrow} ${BOLD}Setting up MCP configuration for ${STACK}...${NC}"
 
 MCP_FILE="${REPO_DIR}/templates/mcp-${STACK}.json"
 if [[ -f "$MCP_FILE" ]]; then
-    cp "$MCP_FILE" "${CLAUDE_DIR}/mcp.json"
-    echo -e "   ${check} Copied mcp-${STACK}.json to .claude/mcp.json"
+    cp "$MCP_FILE" "${TARGET_DIR}/.mcp.json"
+    echo -e "   ${check} Copied mcp-${STACK}.json to .mcp.json"
 else
     echo -e "   ${warn} No MCP template found for ${STACK}"
     echo -e "   ${warn} You can configure MCP manually later — see guides/06-mcp-integrations.md"
@@ -357,8 +357,8 @@ echo -e "    ${TARGET_DIR}/.claude/agents/"
 echo -e "    ${TARGET_DIR}/.claude/skills/"
 echo -e "    ${TARGET_DIR}/.claude/rules/"
 echo -e "    ${TARGET_DIR}/.claude/hooks/"
-echo -e "    ${TARGET_DIR}/.claude/mcp.json"
 echo -e "    ${TARGET_DIR}/.claude/settings.json"
+echo -e "    ${TARGET_DIR}/.mcp.json"
 echo ""
 echo -e "  ${BOLD}Next steps:${NC}"
 echo ""
@@ -377,7 +377,7 @@ case "$STACK" in
         echo -e "    ${CYAN}List all tables in the database${NC}"
         echo ""
         echo -e "  ${warn} Make sure your database credentials are configured in"
-        echo -e "     ${TARGET_DIR}/.claude/mcp.json"
+        echo -e "     ${TARGET_DIR}/.mcp.json"
         ;;
 esac
 

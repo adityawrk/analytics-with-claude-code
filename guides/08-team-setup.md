@@ -9,23 +9,25 @@ Claude Code is designed for team use. The configuration files that define how Cl
 ```
 your-project/
   CLAUDE.md                      # Shared project knowledge
+  .mcp.json                      # MCP server configuration (no secrets)
   .claude/
-    settings.json                # Shared tool permissions, hooks, MCP config
+    settings.json                # Shared tool permissions and hook wiring
     rules/
       sql-conventions.md         # SQL style rules
-      dbt-patterns.md            # dbt-specific patterns
-      data-quality.md            # Data quality standards
+      data-privacy.md            # Data privacy standards
+      metric-definitions.md      # Metric definitions
     skills/
-      data-profiler.md           # Reusable profiling skill
-      weekly-report.md           # Weekly report skill
-      dbt-modeler.md             # dbt model builder skill
+      eda/SKILL.md               # Exploratory data analysis skill
+      ab-test/SKILL.md           # A/B test analysis skill
+      weekly-report/SKILL.md     # Weekly report skill
     agents/
-      data-explorer.md           # Exploration agent
-      query-builder.md           # SQL writing agent
-  .mcp.json                      # MCP server configuration (no secrets)
-  hooks/
-    validate_sql.sh              # SQL validation hook
-    format_sql.sh                # SQL formatting hook
+      analyst.md                 # Business question answering agent
+      data-explorer.md           # Schema exploration agent
+      sql-developer.md           # SQL writing agent
+    hooks/
+      validate-sql.sh            # SQL validation hook
+      auto-format-sql.sh         # SQL formatting hook
+      audit-log.sh               # Query audit logging hook
 ```
 
 ### What NOT to Commit

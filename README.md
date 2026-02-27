@@ -119,6 +119,7 @@ your-analytics-project/
 │   ├── rules/                 # Auto-applied rules (SQL conventions, data privacy)
 │   ├── hooks/                 # Pre/post tool hooks (SQL validator, audit logger)
 │   └── settings.json          # Hook wiring and permissions
+├── .mcp.json                  # MCP server configuration (database connections)
 ├── models/                    # Your dbt models (if using dbt)
 ├── sql/                       # Ad-hoc SQL queries
 ├── notebooks/                 # Jupyter notebooks

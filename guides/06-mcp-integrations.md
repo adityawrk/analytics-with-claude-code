@@ -14,32 +14,27 @@ Claude Code  <-->  MCP Client  <-->  MCP Server  <-->  Your Database
                                                         Your Tool
 ```
 
-Each MCP server is a lightweight process that speaks the MCP protocol. Claude Code manages the servers, starting and stopping them as needed. You configure which servers to use in `.mcp.json` or `.claude/settings.json`.
+Each MCP server is a lightweight process that speaks the MCP protocol. Claude Code manages the servers, starting and stopping them as needed. You configure which servers to use in `.mcp.json` at your project root.
 
 ## Setting Up Database Connections
 
 ### PostgreSQL
 
-Install the Postgres MCP server:
-
-```bash
-npm install -g @anthropic-ai/mcp-server-postgres
-```
-
-Create `.mcp.json` in your project root:
+Create `.mcp.json` in your project root (no global install needed -- `npx -y` handles it):
 
 ```json
 {
   "mcpServers": {
     "analytics-db": {
-      "command": "mcp-server-postgres",
-      "args": [],
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "${ANALYTICS_DATABASE_URL}"
+      ],
       "env": {
-        "POSTGRES_HOST": "localhost",
-        "POSTGRES_PORT": "5432",
-        "POSTGRES_DB": "analytics",
-        "POSTGRES_USER": "analyst",
-        "POSTGRES_PASSWORD": "${ANALYTICS_DB_PASSWORD}"
+        "ANALYTICS_DATABASE_URL": ""
       }
     }
   }

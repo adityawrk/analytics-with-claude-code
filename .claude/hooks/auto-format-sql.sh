@@ -86,6 +86,6 @@ fi
 TMPFILE="$(mktemp)"
 trap 'rm -f "$TMPFILE"' EXIT
 
-sqlfluff fix "$FILE_PATH" --force --no-color 2>"$TMPFILE" || true
+sqlfluff fix "$FILE_PATH" --force --no-color >"$TMPFILE" 2>&1 || true
 
 exit 0
