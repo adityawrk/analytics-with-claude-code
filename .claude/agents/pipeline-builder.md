@@ -5,7 +5,6 @@ description: >
   and mart models, data tests, source configurations, and documentation. Use this agent
   when building new data models, adding data sources, restructuring the transformation
   layer, or implementing dbt best practices.
-model: sonnet
 tools: Bash, Read, Edit, Write, Glob, Grep
 ---
 

@@ -5,7 +5,6 @@ description: >
   debugging, performance optimization, and query documentation. Use this agent when
   building analytical queries, creating dbt models, writing reporting SQL, or when
   you need to iterate on query logic against a live database.
-model: sonnet
 tools: Bash, Read, Edit, Write
 ---
 

@@ -1,7 +1,6 @@
 ---
 name: analytics-onboarder
 description: "Maps data sources, discovers relationships, documents tribal knowledge, and generates a Data Team Handbook. Use when onboarding to a new project or creating documentation for an existing one."
-model: sonnet
 tools: Read, Grep, Glob, Bash
 ---
 

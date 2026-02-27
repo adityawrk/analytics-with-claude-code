@@ -5,7 +5,6 @@ description: >
   Use this agent when onboarding to a new dataset, starting a new analysis, mapping
   unfamiliar data sources, or when you need a structured understanding of what data
   is available and how it connects.
-model: haiku
 tools: Read, Grep, Glob, Bash
 ---
 

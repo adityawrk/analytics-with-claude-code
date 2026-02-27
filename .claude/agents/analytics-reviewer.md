@@ -5,7 +5,6 @@ description: >
   metric definitions, statistical methodology, and data quality. Use this agent before
   sharing analysis with stakeholders, during PR reviews of analytical code, or when
   validating that metric definitions match business requirements.
-model: sonnet
 tools: Read, Grep, Glob, Bash
 ---
 

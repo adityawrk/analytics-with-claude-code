@@ -6,7 +6,7 @@ The root CLAUDE.md is the product -- the analytics configuration users copy to t
 
 - `CLAUDE.md` -- THE PRODUCT. What users copy. Make it better, not bigger.
 - `.claude/skills/` -- Skills. YAML frontmatter: `name`, `description`.
-- `.claude/agents/` -- Agents. YAML frontmatter: `name`, `description`, `model`, `tools`.
+- `.claude/agents/` -- Agents. YAML frontmatter: `name`, `description`, `tools`. No `model` field -- agents inherit from the chat session.
 - `.claude/rules/` -- Rules. YAML frontmatter: `description`, `globs`.
 - `.claude/hooks/` -- Bash scripts, JSON from stdin, exit code 2 to block.
 - `demo/` -- DuckDB demo. Zero external deps beyond duckdb.

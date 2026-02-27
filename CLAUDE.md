@@ -30,7 +30,7 @@ You have specialized agents. USE THEM. Delegate execution-heavy work so the main
 
 | Task | Delegate to | Why |
 |------|------------|-----|
-| Discover tables, columns, schemas | `data-explorer` agent | Fast (Haiku), read-only, won't pollute main context |
+| Discover tables, columns, schemas | `data-explorer` agent | Read-only, won't pollute main context |
 | Write or modify SQL queries | `sql-developer` agent | Has full SQL conventions, tests queries, handles dialect differences |
 | Build dbt models, tests, docs | `pipeline-builder` agent | Knows dbt naming (stg/int/fct/dim), generates schema.yml |
 | Map a new data source end-to-end | `analytics-onboarder` agent | Generates a complete data handbook from static analysis |
@@ -96,15 +96,16 @@ These are NON-NEGOTIABLE. Break any of these and the user loses trust permanentl
 
 ## Continuous Learning
 
-Claude trains itself the more you work with it. This happens automatically:
+This configuration puts Claude in an always-learning mode. The architecture creates a feedback loop: every query you run, every agent interaction, every correction you make permanently enriches Claude's understanding of your data. Here's how:
 
-**On every session:**
-- Read the Learnings section to recall what you know about this project
-- If you discover a new table, column, relationship, or pattern not yet documented -- add it to Learnings immediately
-- If a query fails because of a wrong assumption -- correct the learning and note the gotcha
-- If the user corrects you on a metric definition, business rule, or convention -- record the correction verbatim
+**The learning loop:**
+1. **Session 1**: You paste your top 5 queries. Claude reverse-engineers your data model and writes it to the Learnings section below.
+2. **Every agent run**: Agents (`data-explorer`, `sql-developer`, `analytics-reviewer`, etc.) report back a "New Discoveries" section with schema details, relationships, and gotchas they found. Claude captures these in Learnings automatically.
+3. **Every correction**: When you correct a metric definition, fix a table name, or point out a business rule -- Claude records it verbatim so it never gets it wrong again.
+4. **Every failure**: When a query errors because of a wrong assumption, Claude updates the learning and notes the gotcha for next time.
+5. **Session N+1 is smarter than session N**: Claude reads Learnings at the start of every session. The more you work, the more it knows.
 
-**What to capture:**
+**What gets captured:**
 - Schema details: table names, column names, data types, grain, partitioning
 - Relationships: how tables join, what the cardinality is, which JOINs are safe
 - Business rules: metric definitions, status codes that mean "active", date cutoffs, exclusion filters

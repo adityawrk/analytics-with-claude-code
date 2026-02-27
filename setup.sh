@@ -222,7 +222,7 @@ CLAUDE_MD="${TARGET_DIR}/CLAUDE.md"
 cp "${REPO_DIR}/CLAUDE.md" "$CLAUDE_MD"
 
 echo -e "   ${check} Copied CLAUDE.md to ${CLAUDE_MD}"
-echo -e "   ${info} Open Claude Code, paste your top 5 queries, and Claude learns your data model."
+echo -e "   ${arrow} Open Claude Code, paste your top 5 queries, and Claude learns your data model."
 
 # ---------------------------------------------------------------------------
 # Step 10: Copy rules
