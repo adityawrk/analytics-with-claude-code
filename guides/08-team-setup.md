@@ -179,7 +179,7 @@ Create an onboarding section in your README (or a dedicated doc):
 
 1. Install Claude Code:
    ```bash
-   brew install claude-code
+   curl -fsSL https://claude.ai/install.sh | bash
    ```
 
 2. Clone the analytics repo:
@@ -394,7 +394,21 @@ Create `hooks/pii_guard.sh`:
 
 ```bash
 #!/bin/bash
+# Uses the hookSpecificOutput JSON protocol for PreToolUse hooks.
+set -euo pipefail
+
 input=$(cat)
+
+deny() {
+  jq -n --arg reason "$1" '{
+    hookSpecificOutput: {
+      hookEventName: "PreToolUse",
+      permissionDecision: "deny",
+      permissionDecisionReason: $reason
+    }
+  }'
+  exit 0
+}
 
 tool_name=$(echo "$input" | jq -r '.tool_name')
 if [ "$tool_name" != "Bash" ]; then
@@ -408,16 +422,13 @@ upper_command=$(echo "$command" | tr '[:lower:]' '[:upper:]')
 pii_columns=("EMAIL" "PHONE_NUMBER" "ADDRESS" "SSN" "CREDIT_CARD" "DATE_OF_BIRTH")
 for col in "${pii_columns[@]}"; do
   if echo "$upper_command" | grep -qE "SELECT.*$col|SELECT \*.*RAW_PII"; then
-    echo "BLOCKED: Query references PII column ($col) or PII schema."
-    echo "If you need this data, submit a data access request."
-    exit 2
+    deny "Query references PII column ($col) or PII schema. Submit a data access request."
   fi
 done
 
 # Block queries to restricted schemas
 if echo "$upper_command" | grep -qE "FROM.*RAW_PII\.|JOIN.*RAW_PII\."; then
-  echo "BLOCKED: Query references the raw_pii schema."
-  exit 2
+  deny "Query references the raw_pii schema."
 fi
 
 exit 0

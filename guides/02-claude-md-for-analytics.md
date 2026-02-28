@@ -13,10 +13,11 @@ Claude Code reads instructions from multiple sources, in this priority order:
 | Priority | Source | Scope | How to Set |
 |----------|--------|-------|-----------|
 | 1 (highest) | Managed policy | Organization-wide | Admin dashboard |
-| 2 | Project rules | Per-project | `.claude/rules/*.md` files |
-| 3 | CLAUDE.md | Per-project | `CLAUDE.md` in project root |
-| 4 | User rules | Per-user | `~/.claude/CLAUDE.md` |
-| 5 (lowest) | Auto-generated | Per-project | Created by `/memory` command |
+| 2 | CLAUDE.md | Per-project | `CLAUDE.md` or `.claude/CLAUDE.md` in project root |
+| 3 | Project rules | Per-project | `.claude/rules/*.md` files |
+| 4 | User memory | Per-user | `~/.claude/CLAUDE.md` |
+| 5 | CLAUDE.local.md | Per-project, personal | `CLAUDE.local.md` in project root (gitignored) |
+| 6 (lowest) | Auto memory | Per-project | Created by `/memory` command |
 
 For analytics teams, the most important layers are:
 

@@ -35,23 +35,40 @@ Every hook receives a JSON payload describing the event:
 }
 ```
 
-### Exit Codes
+### Exit Codes and Output Protocol
 
 | Exit Code | Meaning |
 |-----------|---------|
-| 0 | Allow the action to proceed (no modifications) |
+| 0 | Success. For PreToolUse, stdout JSON controls the decision (see below). For PostToolUse, no stdout needed. |
 | 1 | Hook error (action proceeds, error is logged) |
-| 2 | Block the action (PreToolUse only) |
+| 2 | Block the action (PreToolUse only, legacy alternative — prefer JSON protocol below) |
 
-### Output (stdout)
+**PreToolUse hooks** communicate decisions via JSON on stdout with `exit 0`:
 
-For `PreToolUse` hooks, stdout can contain a reason for blocking:
-
+**To block an action** (preferred pattern):
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PreToolUse",
+    "permissionDecision": "deny",
+    "permissionDecisionReason": "Query contains DROP TABLE. Not allowed in analytics sessions."
+  }
+}
 ```
-BLOCKED: Query contains DROP TABLE. This is not allowed in analytics sessions.
+
+**To add a warning without blocking:**
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PreToolUse",
+    "additionalContext": "Warning: query targets a large table. Consider adding a date filter."
+  }
+}
 ```
 
-For `PostToolUse` hooks, stdout is ignored.
+**To allow silently:** exit 0 with no stdout.
+
+**PostToolUse hooks** should exit 0 with no stdout. They run for side effects only (formatting, logging).
 
 ## Analytics Use Cases
 
@@ -64,8 +81,34 @@ Create `hooks/validate_sql.sh`:
 ```bash
 #!/bin/bash
 # Reads the tool input from stdin and checks for dangerous SQL patterns
+# Uses the hookSpecificOutput JSON protocol for PreToolUse hooks.
+
+set -euo pipefail
 
 input=$(cat)
+
+# Helper: deny with reason (exits 0 with JSON)
+deny() {
+  jq -n --arg reason "$1" '{
+    hookSpecificOutput: {
+      hookEventName: "PreToolUse",
+      permissionDecision: "deny",
+      permissionDecisionReason: $reason
+    }
+  }'
+  exit 0
+}
+
+# Helper: warn without blocking
+warn() {
+  jq -n --arg ctx "$1" '{
+    hookSpecificOutput: {
+      hookEventName: "PreToolUse",
+      additionalContext: $ctx
+    }
+  }'
+  exit 0
+}
 
 # Only check Bash commands
 tool_name=$(echo "$input" | jq -r '.tool_name')
@@ -92,26 +135,20 @@ upper_command=$(echo "$command" | tr '[:lower:]' '[:upper:]')
 
 for pattern in "${dangerous_patterns[@]}"; do
   if echo "$upper_command" | grep -qE "$pattern"; then
-    echo "BLOCKED: Detected dangerous SQL pattern: $pattern"
-    echo "If you need to run this query, execute it directly in your database client."
-    exit 2
+    deny "Detected dangerous SQL pattern: $pattern. Run this directly in your database client."
   fi
 done
 
 # Block queries without WHERE clause on large tables
 if echo "$upper_command" | grep -qE "^(SELECT|UPDATE|DELETE).*FROM.*(EVENTS|LOGS|CLICKS)" && \
    ! echo "$upper_command" | grep -q "WHERE"; then
-  echo "BLOCKED: Query on large table without WHERE clause."
-  echo "Add a date filter or LIMIT clause."
-  exit 2
+  deny "Query on large table without WHERE clause. Add a date filter or LIMIT clause."
 fi
 
 # Warn about SELECT * on production tables
 if echo "$upper_command" | grep -qE "SELECT \*.*FROM.*(PROD|RAW)" && \
    ! echo "$upper_command" | grep -q "LIMIT"; then
-  echo "BLOCKED: SELECT * on production/raw table without LIMIT."
-  echo "Add LIMIT or select specific columns."
-  exit 2
+  warn "SELECT * on production/raw table without LIMIT. Consider adding LIMIT or selecting specific columns."
 fi
 
 exit 0
@@ -322,12 +359,17 @@ echo '{"tool_name":"Bash","tool_input":{"command":"psql -c \"DROP TABLE users;\"
 echo "Exit code: $?"
 ```
 
-Expected output:
+Expected output (JSON deny decision, exit code 0):
 
-```
-BLOCKED: Detected dangerous SQL pattern: DROP TABLE
-If you need to run this query, execute it directly in your database client.
-Exit code: 2
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PreToolUse",
+    "permissionDecision": "deny",
+    "permissionDecisionReason": "Detected dangerous SQL pattern: DROP TABLE. Run this directly in your database client."
+  }
+}
+Exit code: 0
 ```
 
 Test a safe query:
@@ -337,7 +379,7 @@ echo '{"tool_name":"Bash","tool_input":{"command":"psql -c \"SELECT * FROM users
 echo "Exit code: $?"
 ```
 
-Expected output:
+Expected output (no stdout, exit code 0):
 
 ```
 Exit code: 0

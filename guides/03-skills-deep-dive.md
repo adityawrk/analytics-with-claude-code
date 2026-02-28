@@ -14,7 +14,11 @@ A skill is a markdown file with YAML frontmatter, placed in `.claude/skills/`:
 ---
 name: "data-profiler"
 description: "Profile a dataset with standard statistics, distributions, and quality checks"
-invocation: "both"
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Glob
 ---
 
 # Data Profiler
@@ -42,15 +46,9 @@ When asked to profile a dataset, follow these steps:
 |-------|----------|-------------|
 | `name` | Yes | Identifier used to invoke the skill |
 | `description` | Yes | Short description shown in skill listings |
-| `invocation` | No | Who can trigger it: `user` (slash command only), `claude` (auto-detected), `both` (default) |
+| `allowed-tools` | No | List of tools the skill can use (e.g., Bash, Read, Write, Glob, Grep) |
 
-### Invocation Control
-
-- **`user`** -- The skill is only loaded when you type `/skill:data-profiler`. Claude Code will never load it on its own.
-- **`claude`** -- Claude Code can load this skill automatically when it determines the task matches. You cannot invoke it manually.
-- **`both`** (default) -- Either you or Claude Code can trigger it.
-
-For analytics skills, `both` is usually the right choice. You want to be able to type `/skill:data-profiler` explicitly, but you also want Claude Code to use it when you say "profile this dataset."
+Skills are invoked by typing `/skill-name` (e.g., `/data-profiler`) or by Claude Code auto-detecting that the task matches the skill's description.
 
 ## Dynamic Context Injection
 
@@ -60,7 +58,12 @@ Skills can include shell commands that run at load time and inject their output 
 ---
 name: "dbt-modeler"
 description: "Build dbt models following project conventions"
-invocation: "both"
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Glob
+  - Grep
 ---
 
 # dbt Model Builder
@@ -103,7 +106,11 @@ Create `.claude/skills/data-profiler.md`:
 ---
 name: "data-profiler"
 description: "Comprehensive dataset profiling with quality checks"
-invocation: "both"
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Glob
 ---
 
 # Data Profiler Skill
@@ -185,7 +192,11 @@ Create `.claude/skills/weekly-report.md`:
 ---
 name: "weekly-report"
 description: "Generate the weekly analytics report with KPIs and commentary"
-invocation: "user"
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Glob
 ---
 
 # Weekly Report Generator
@@ -261,7 +272,7 @@ After generating, ask the user if they want to:
 - Share key numbers (offer to format for Slack)
 ```
 
-Set invocation to `user` because this is a deliberate weekly task, not something Claude Code should auto-trigger.
+This skill is typically invoked explicitly since it is a deliberate weekly task:
 
 Invoke it:
 
@@ -275,10 +286,10 @@ To use any of the skills included in this repository:
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-org/analytics-with-claude-code.git
+git clone https://github.com/adityawrk/analytics-with-claude-code.git
 
 # Copy skills to your project
-cp -r analytics-with-claude-code/skills/* your-project/.claude/skills/
+cp -r analytics-with-claude-code/.claude/skills/* your-project/.claude/skills/
 
 # Or symlink for automatic updates
 ln -s /path/to/analytics-with-claude-code/skills/data-profiler.md \

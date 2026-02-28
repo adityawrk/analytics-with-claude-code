@@ -41,10 +41,10 @@ Create `.mcp.json` in your project root (no global install needed -- `npx -y` ha
 }
 ```
 
-The `${ANALYTICS_DB_PASSWORD}` syntax references an environment variable. Set it in your shell:
+The `${ANALYTICS_DATABASE_URL}` syntax references an environment variable. Set it in your shell:
 
 ```bash
-export ANALYTICS_DB_PASSWORD="your_password_here"
+export ANALYTICS_DATABASE_URL="postgresql://user:password@localhost:5432/analytics"
 ```
 
 Now in Claude Code:

@@ -42,6 +42,7 @@ data/processed/
 Thumbs.db
 
 # Claude Code (local-only files)
+CLAUDE.local.md
 .claude/CLAUDE.local.md
 .claude/worktrees/
 

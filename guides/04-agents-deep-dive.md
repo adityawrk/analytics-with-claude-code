@@ -2,9 +2,9 @@
 
 ## What Subagents Are
 
-Subagents are isolated Claude instances that your main Claude Code session can spawn to handle specific tasks. Each agent gets its own context window, can use a different model, and has defined tool access. When the agent finishes, it returns results to the parent session.
+Subagents are isolated Claude instances that your main Claude Code session can spawn to handle specific tasks. Each agent gets its own context window, has defined tool access, and inherits the model from the parent session. When the agent finishes, it returns results to the parent session.
 
-Think of it this way: you are the lead analyst. You delegate "go explore this table" to a junior agent (fast, cheap model) and "write the final SQL" to a senior agent (powerful model). The orchestration happens automatically.
+Think of it this way: you are the lead analyst. You delegate "go explore this table" to a focused agent with read-only tools and "write the final SQL" to an agent with write access. The orchestration happens automatically.
 
 ## When to Use Agents vs Skills
 
@@ -26,16 +26,11 @@ Agents live in `.claude/agents/` as markdown files with YAML frontmatter:
 ---
 name: "data-explorer"
 description: "Explores datasets and surfaces key findings"
-model: "claude-haiku-4"
 tools:
   - Read
   - Bash
   - Glob
   - Grep
-allowed_commands:
-  - "python*"
-  - "head*"
-  - "wc*"
 ---
 
 # Data Explorer Agent
@@ -64,29 +59,22 @@ Return a structured summary:
 |-------|----------|-------------|
 | `name` | Yes | Identifier for the agent |
 | `description` | Yes | What this agent does |
-| `model` | No | Model to use (defaults to parent's model) |
 | `tools` | No | List of allowed tools (defaults to parent's tools) |
-| `allowed_commands` | No | Shell commands this agent can run |
 
-## Model Selection Strategy
+> **Note:** Agents inherit the model from the parent chat session. There is no `model` field in agent frontmatter. Model routing (using cheaper models for exploration vs. expensive models for reasoning) is handled at the orchestration level — the parent session decides which agent to spawn for which task.
 
-Choosing the right model for each agent is the key to balancing cost and quality:
+## Cost-Effective Agent Design
 
-| Model | Best For | Cost | Speed |
-|-------|----------|------|-------|
-| `claude-haiku-4` | Exploration, counting, simple extraction | Lowest | Fastest |
-| `claude-sonnet-4` | Implementation, SQL writing, code generation | Medium | Medium |
-| `claude-opus-4` | Complex reasoning, architecture decisions, final review | Highest | Slowest |
+Since agents inherit the parent session's model, cost optimization comes from **tool scoping** — give each agent only the tools it needs. Fewer tools means fewer costly tool-use cycles and tighter focus.
 
-### Practical Model Assignments
+| Agent Purpose | Recommended Tools | Why |
+|---------------|------------------|-----|
+| Exploration | Read, Glob, Grep | Read-only — cannot accidentally modify anything |
+| SQL writing | Read, Bash, Write, Grep, Glob | Needs Bash to test queries, Write to save models |
+| Review/validation | Read, Grep, Glob | Static analysis only — no execution needed |
+| Report generation | Read, Bash, Write, Grep, Glob | Needs Bash for queries, Write for output |
 
-```
-Exploration agent    -> haiku    (read lots of files, cheap)
-SQL writing agent    -> sonnet   (needs to write correct SQL)
-Analysis agent       -> sonnet   (statistical reasoning)
-Report writing agent -> opus     (nuanced commentary)
-Review agent         -> opus     (catches subtle errors)
-```
+To run exploration tasks on a cheaper model, use the Task tool's `model` parameter at the orchestration level rather than in the agent definition.
 
 ## Isolation and Context Management
 
@@ -108,17 +96,11 @@ Create `.claude/agents/data-explorer.md`:
 ---
 name: "data-explorer"
 description: "Quick exploration of datasets - finds patterns, anomalies, and key statistics"
-model: "claude-haiku-4"
 tools:
   - Read
   - Bash
   - Glob
   - Grep
-allowed_commands:
-  - "python*"
-  - "head*"
-  - "wc*"
-  - "file*"
 ---
 
 # Data Explorer
@@ -171,10 +153,10 @@ interesting pattern it discovered.
 ```
 
 Claude Code will:
-1. Spawn the data-explorer agent (running on haiku -- fast and cheap).
+1. Spawn the data-explorer agent with read-only tools.
 2. The agent reads the file, runs Python commands, and produces a report.
 3. The parent session receives the report.
-4. The parent session (running on its default model) writes the SQL query.
+4. The parent session writes the SQL query based on the findings.
 
 ## Walkthrough: Orchestrating Multiple Agents
 
@@ -188,12 +170,9 @@ For a complete analysis workflow, create several agents that work in sequence.
 ---
 name: "schema-scout"
 description: "Maps database schemas and finds relevant tables"
-model: "claude-haiku-4"
 tools:
   - Bash
   - Read
-allowed_commands:
-  - "python*"
 ---
 
 # Schema Scout
@@ -215,13 +194,10 @@ Given a question or topic, find the relevant tables in the database.
 ---
 name: "query-builder"
 description: "Writes optimized SQL queries from requirements and schema information"
-model: "claude-sonnet-4"
 tools:
   - Bash
   - Read
   - Write
-allowed_commands:
-  - "python*"
 ---
 
 # Query Builder
@@ -244,13 +220,10 @@ Given a question, a schema map, and query requirements:
 ---
 name: "insight-writer"
 description: "Turns query results into clear business insights"
-model: "claude-opus-4"
 tools:
   - Read
   - Write
   - Bash
-allowed_commands:
-  - "python*"
 ---
 
 # Insight Writer
@@ -278,7 +251,7 @@ by segment, channel, and product. Run the queries.
 Finally, use the insight-writer agent to produce a memo explaining the findings.
 ```
 
-This runs three agents in sequence, each using the optimal model for its task. Total cost is much lower than running everything on opus.
+This runs three agents in sequence, each scoped to exactly the tools it needs. The schema-scout only reads; the query-builder can write SQL files; the insight-writer produces the final memo.
 
 ## Agent Memory and Persistent Learning
 
@@ -294,18 +267,11 @@ To create persistent learning:
 
 ## Cost Management
 
-Monitor costs with `/cost` during any session. Model selection is your primary cost lever:
-
-| Scenario | Without Agents | With Agents |
-|----------|---------------|-------------|
-| Explore 10 files + write analysis | All on opus: $2.50 | Exploration on haiku ($0.15) + analysis on sonnet ($0.40) = $0.55 |
-| Weekly report generation | All on opus: $1.80 | Data pull on haiku ($0.10) + formatting on sonnet ($0.30) + review on opus ($0.50) = $0.90 |
-
-The key insight: most of the tokens in an analytics workflow are spent on reading data and exploring. That work does not require the most powerful model. Reserve opus for the final reasoning step.
+Monitor costs with `/cost` during any session. Agent design is your primary cost lever — agents with fewer tools and tighter scope finish faster, using fewer tokens.
 
 ### Cost-Saving Patterns
 
-1. **Explore cheap, analyze expensive.** Use haiku agents to read files and gather facts. Use sonnet/opus only for reasoning.
-2. **Limit agent tools.** Give exploration agents only `Read` and `Bash`. Fewer tools means fewer costly tool-use cycles.
-3. **Set clear stopping criteria.** Agents without boundaries will keep exploring. Define "done" in the agent definition.
-4. **Reuse findings.** Have agents write discoveries to files so subsequent agents (or sessions) do not repeat the exploration.
+1. **Scope tools tightly.** Give exploration agents only `Read`, `Glob`, and `Grep`. Fewer tools means fewer costly tool-use cycles.
+2. **Set clear stopping criteria.** Agents without boundaries will keep exploring. Define "done" in the agent definition.
+3. **Reuse findings.** Have agents write discoveries to files so subsequent agents (or sessions) do not repeat the exploration.
+4. **Use the Task tool's `model` parameter** at the orchestration level when you want to run a subtask on a cheaper model (e.g., haiku for exploration).
