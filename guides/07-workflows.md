@@ -152,7 +152,7 @@ the grain, the source, and how to use it. Add to the YAML file.
 ### Tips for dbt Development
 
 - Include your dbt naming conventions in CLAUDE.md. This is the single highest-value entry.
-- Use the `/skill:dbt-modeler` skill if you built one (see Guide 03).
+- Use the `/dbt-modeler` skill if you built one (see Guide 03).
 - Always have Claude Code run `dbt test` after creating models.
 - For incremental models, have Claude Code test both full-refresh and incremental runs.
 
@@ -374,7 +374,7 @@ full weekly report workflow:
 With the skill in place, the weekly workflow becomes:
 
 ```bash
-claude "/skill:weekly-report Generate this week's report"
+claude "/weekly-report Generate this week's report"
 ```
 
 Claude Code runs the scripts, generates the report, creates the charts, writes commentary, and presents it for your review. You edit as needed, then approve for distribution.

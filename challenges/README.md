@@ -29,11 +29,10 @@ your experience level.
    python setup_demo_data.py
    ```
 
-2. **Open a challenge:**
+2. **Open a challenge** (run Claude Code from the repo root so it picks up CLAUDE.md and skills):
 
    ```bash
-   cd challenges/01-data-detective
-   claude
+   claude "Open challenges/01-data-detective/CHALLENGE.md and walk me through it"
    ```
 
 3. **Read the CHALLENGE.md** — each one gives you a scenario, a dataset, and a

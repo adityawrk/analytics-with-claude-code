@@ -45,12 +45,7 @@ You have specialized agents. USE THEM. Delegate execution-heavy work so the main
 - User asks "how do you define churn?" → stay in main chat (this is a discussion, not execution)
 - User corrects a metric → stay in main chat, update Learnings
 
-**Context management**: Each agent has its own context window. When delegating:
-- Include relevant Learnings context in the task description (table names, schemas, relationships the agent will need)
-- Be specific about what output you expect
-- Agents will read CLAUDE.md themselves for the full data model, but key context in the task description helps them work faster
-
-**Capture discoveries**: When an agent returns results, check for a "New Discoveries" or "For CLAUDE.md Learnings" section. Add any new schema details, relationships, or gotchas to the Learnings section below. This is how Claude trains itself — every agent interaction enriches the data model knowledge.
+**Context management**: Each agent has its own context window. When delegating, include relevant Learnings context in the task description and be specific about expected output.
 
 ## Auto-Review Pipeline
 
@@ -91,20 +86,10 @@ See `.claude/rules/data-privacy.md` (auto-applied). Key rules: no raw PII in out
 
 ## Continuous Learning
 
-After every agent run, check for a "New Discoveries" section in the agent's response. Add any new schema details, relationships, or gotchas to the Learnings section below.
+After every agent run, check for "New Discoveries" in the response and add new schema details, relationships, or gotchas below. When the user corrects a metric or a query errors due to a wrong assumption, record it. Read Learnings at the start of every session.
 
-When the user corrects a metric definition, fixes a table name, or points out a business rule — record it verbatim. When a query errors due to a wrong assumption, note the gotcha.
-
-Read Learnings at the start of every session.
-
-**Rules:**
-- One learning per line. Format: `- [SCHEMA/METRIC/GOTCHA/PREFERENCE] description`
-- Max 50 entries. When you hit 50, consolidate related entries.
-- Never delete a learning the user explicitly told you. Prune only things you inferred that turned out wrong.
-- Learnings are cumulative -- they only grow as you work more with this project.
+**Rules:** One learning per line as `- [SCHEMA/METRIC/GOTCHA/PREFERENCE] description`. Max 50 entries (consolidate when full). Never delete user-provided learnings.
 
 ## Learnings
 
-<!-- This section is empty on first use. -->
-<!-- Session 1: Paste your top 5 queries here. Claude will extract your data model. -->
-<!-- Session 2+: Claude reads this and already knows your data. It keeps adding as it learns more. -->
+<!-- Empty on first use. Paste your top 5 queries to populate. -->

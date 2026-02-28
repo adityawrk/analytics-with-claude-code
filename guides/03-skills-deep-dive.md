@@ -8,7 +8,7 @@ Think of skills as playbooks. A "data profiler" skill tells Claude Code exactly 
 
 ## Anatomy of a SKILL.md File
 
-A skill is a markdown file with YAML frontmatter, placed in `.claude/skills/`:
+A skill is a markdown file with YAML frontmatter, placed in `.claude/skills/<skill-name>/SKILL.md`:
 
 ```markdown
 ---
@@ -97,10 +97,10 @@ The backtick-wrapped commands execute when the skill loads, so Claude Code alway
 ### Step 1: Create the Skill File
 
 ```bash
-mkdir -p .claude/skills
+mkdir -p .claude/skills/data-profiler
 ```
 
-Create `.claude/skills/data-profiler.md`:
+Create `.claude/skills/data-profiler/SKILL.md`:
 
 ```markdown
 ---
@@ -165,7 +165,7 @@ Based on the profile, suggest:
 ### Step 2: Test It
 
 ```bash
-claude "/skill:data-profiler Profile the file sales_q4.csv"
+claude "/data-profiler Profile the file sales_q4.csv"
 ```
 
 Or simply:
@@ -174,7 +174,7 @@ Or simply:
 claude "Profile the file sales_q4.csv"
 ```
 
-If invocation is set to `both`, Claude Code will auto-detect and load the skill.
+Claude Code will auto-detect and load the skill when the task matches the description.
 
 ### Step 3: Iterate
 
@@ -186,7 +186,7 @@ After the first run, refine the skill. Common additions:
 
 ## Walkthrough: Building a Weekly Report Skill
 
-Create `.claude/skills/weekly-report.md`:
+Create `.claude/skills/weekly-report/SKILL.md`:
 
 ```markdown
 ---
@@ -277,7 +277,7 @@ This skill is typically invoked explicitly since it is a deliberate weekly task:
 Invoke it:
 
 ```bash
-claude "/skill:weekly-report Generate this week's report"
+claude "/weekly-report Generate this week's report"
 ```
 
 ## Installing Skills from This Repository
@@ -291,9 +291,9 @@ git clone https://github.com/adityawrk/analytics-with-claude-code.git
 # Copy skills to your project
 cp -r analytics-with-claude-code/.claude/skills/* your-project/.claude/skills/
 
-# Or symlink for automatic updates
-ln -s /path/to/analytics-with-claude-code/skills/data-profiler.md \
-      your-project/.claude/skills/data-profiler.md
+# Or symlink a specific skill for automatic updates
+ln -s /path/to/analytics-with-claude-code/.claude/skills/eda \
+      your-project/.claude/skills/eda
 ```
 
 You can also selectively copy only the skills you need.

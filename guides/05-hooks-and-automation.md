@@ -76,7 +76,7 @@ Every hook receives a JSON payload describing the event:
 
 Block dangerous SQL queries before they reach your database.
 
-Create `hooks/validate_sql.sh`:
+Create `.claude/hooks/validate-sql.sh`:
 
 ```bash
 #!/bin/bash
@@ -157,14 +157,14 @@ exit 0
 Make it executable:
 
 ```bash
-chmod +x hooks/validate_sql.sh
+chmod +x .claude/hooks/validate-sql.sh
 ```
 
 ### Use Case 2: Auto-Format SQL After Edits
 
 Automatically format SQL files after Claude Code writes or edits them.
 
-Create `hooks/format_sql.sh`:
+Create `.claude/hooks/auto-format-sql.sh`:
 
 ```bash
 #!/bin/bash
@@ -198,7 +198,7 @@ exit 0
 
 Check that your data sources are fresh when you start a Claude Code session.
 
-Create `hooks/check_freshness.sh`:
+Create `.claude/hooks/check-freshness.sh`:
 
 ```bash
 #!/bin/bash
@@ -237,7 +237,7 @@ exit 0
 
 Get a system notification (or Slack message) when Claude Code finishes a long-running task.
 
-Create `hooks/notify_complete.sh`:
+Create `.claude/hooks/notify-complete.sh`:
 
 ```bash
 #!/bin/bash
@@ -279,7 +279,7 @@ Hooks are configured in `.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "bash hooks/validate_sql.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/validate-sql.sh"
           }
         ]
       }
@@ -290,7 +290,7 @@ Hooks are configured in `.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "bash hooks/format_sql.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/auto-format-sql.sh"
           }
         ]
       }
@@ -301,7 +301,7 @@ Hooks are configured in `.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "bash hooks/notify_complete.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/notify-complete.sh"
           }
         ]
       }
@@ -312,7 +312,7 @@ Hooks are configured in `.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "bash hooks/notify_complete.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/notify-complete.sh"
           }
         ]
       }
@@ -339,23 +339,23 @@ This walks through the complete setup from scratch.
 ### 1. Create the hooks directory
 
 ```bash
-mkdir -p hooks
+mkdir -p .claude/hooks
 ```
 
 ### 2. Write the validation script
 
-Save the SQL validation script from Use Case 1 above as `hooks/validate_sql.sh`.
+Save the SQL validation script from Use Case 1 above as `.claude/hooks/validate-sql.sh`.
 
 ### 3. Make it executable
 
 ```bash
-chmod +x hooks/validate_sql.sh
+chmod +x .claude/hooks/validate-sql.sh
 ```
 
 ### 4. Test the script manually
 
 ```bash
-echo '{"tool_name":"Bash","tool_input":{"command":"psql -c \"DROP TABLE users;\""}}' | bash hooks/validate_sql.sh
+echo '{"tool_name":"Bash","tool_input":{"command":"psql -c \"DROP TABLE users;\""}}' | bash .claude/hooks/validate-sql.sh
 echo "Exit code: $?"
 ```
 
@@ -375,7 +375,7 @@ Exit code: 0
 Test a safe query:
 
 ```bash
-echo '{"tool_name":"Bash","tool_input":{"command":"psql -c \"SELECT * FROM users LIMIT 10;\""}}' | bash hooks/validate_sql.sh
+echo '{"tool_name":"Bash","tool_input":{"command":"psql -c \"SELECT * FROM users LIMIT 10;\""}}' | bash .claude/hooks/validate-sql.sh
 echo "Exit code: $?"
 ```
 
@@ -402,7 +402,7 @@ mkdir -p .claude
         "hooks": [
           {
             "type": "command",
-            "command": "bash hooks/validate_sql.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/validate-sql.sh"
           }
         ]
       }
@@ -427,7 +427,7 @@ Always test hooks outside of Claude Code first:
 
 ```bash
 # Pipe a sample payload to the hook
-echo '{"tool_name":"Bash","tool_input":{"command":"SELECT * FROM events"}}' | bash hooks/validate_sql.sh
+echo '{"tool_name":"Bash","tool_input":{"command":"SELECT * FROM events"}}' | bash .claude/hooks/validate-sql.sh
 echo "Exit: $?"
 ```
 
@@ -437,7 +437,7 @@ Add logging to your hooks for debugging:
 
 ```bash
 #!/bin/bash
-LOG_FILE="hooks/hook.log"
+LOG_FILE=".claude/hooks/hook.log"
 
 input=$(cat)
 echo "$(date): Received: $input" >> "$LOG_FILE"
@@ -456,7 +456,7 @@ exit 0
 | Hook blocks everything | Exit code logic is wrong | Ensure safe queries return exit 0 |
 | Hook is slow | Script does expensive operations | Cache results, use fast tools |
 | JSON parsing fails | `jq` not installed | Install jq: `brew install jq` |
-| Permission denied | Script not executable | Run `chmod +x hooks/your_hook.sh` |
+| Permission denied | Script not executable | Run `chmod +x .claude/hooks/your-hook.sh` |
 
 ### Performance
 
@@ -465,6 +465,6 @@ Hooks run synchronously. A slow hook blocks Claude Code. Keep hooks under 1 seco
 ```bash
 #!/bin/bash
 # Run the slow check in the background
-nohup bash hooks/slow_check.sh &>/dev/null &
+nohup bash .claude/hooks/slow-check.sh &>/dev/null &
 exit 0
 ```

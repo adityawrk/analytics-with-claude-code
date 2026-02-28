@@ -12,9 +12,9 @@ slash command, and agent workflow without connecting to a production system.
 
 ```bash
 cd demo
-pip install duckdb
-python setup_demo_data.py   # generates the sample database (~3 seconds)
-claude                      # start Claude Code in this directory
+pip install duckdb           # or use your preferred virtual environment
+python setup_demo_data.py    # generates the sample database (~3 seconds)
+claude                       # start Claude Code in this directory
 ```
 
 That's it. The `CLAUDE.md` in this directory tells Claude about the dataset,

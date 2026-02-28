@@ -390,7 +390,7 @@ Define what Claude Code can and cannot access:
 
 ### Hook-Based PII Protection
 
-Create `hooks/pii_guard.sh`:
+Create `.claude/hooks/pii-guard.sh`:
 
 ```bash
 #!/bin/bash
@@ -440,7 +440,7 @@ For teams that need audit trails, log all Claude Code database queries:
 
 ```bash
 #!/bin/bash
-# hooks/audit_log.sh - PostToolUse hook for MCP database queries
+# .claude/hooks/audit-log.sh - PostToolUse hook for MCP database queries
 input=$(cat)
 
 tool_name=$(echo "$input" | jq -r '.tool_name')
